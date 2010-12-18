@@ -16,7 +16,7 @@ along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------------------------------------------------------------------
 
 This program is a simple vocabulary trainer based on text files.
-For the syntax of the vocabulary db, see the example file (vok_ex.txt).
+For the syntax of the vocabulary db, see the example file (voc_ex.txt).
 
 There is no installation required, simply run the script SVocTrainer.pl in a shell.
 
