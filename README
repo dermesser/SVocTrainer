@@ -16,13 +16,12 @@ along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------------------------------------------------------------------
 
 This program is a simple vocabulary trainer based on text files.
-For the syntax of the vocalbluray db, see the example file (vok_ex.txt).
+For the syntax of the vocabulary db, see the example file (vok_ex.txt).
 
-There is no installation required, simply run it via ` $./SVocTrainer.pl ' (you have to make it exutable with ' $chmod a+x SVocTrainer.pl ` initially).
+There is no installation required, simply run the script SVocTrainer.pl in a shell.
 
 Requirements:
-- an actual perl distribution
-- the additional perl module "Switch".
+- a perl distribution with the additional perl module "Switch"
 
 Contact:
 - LLynx: l.lynx@ymail.com
