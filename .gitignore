@@ -1,0 +1,5 @@
+#ignore vi-swaps
+.*.swp
+
+#ignore graphical swaps
+*~ 

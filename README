@@ -23,6 +23,7 @@ There is no installation required, simply run the script SVocTrainer.pl in a she
 Requirements:
 - a perl distribution with the additional perl module "Switch"
 
+For more information and the latest version, see our project site at svoctrainer.sourceforge.net
+
 Contact:
-- LLynx: l.lynx@ymail.com
-- Der Messer: der.messer@web.de
+- svoctrainer-support@lists.sourceforge.net
