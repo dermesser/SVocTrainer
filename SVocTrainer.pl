@@ -30,8 +30,8 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
-print("\nPlease insert \"trainer l1\" for a test of l1 or \"trainer l2\" for a test of l2 to the first line of your database. 
-Or input \"dic l1\" for a dictionary look-up of l1 or \"dic l2\" for a look-up of l2. (the dic modes aren't yet implemented) > ");
+print "\nPlease insert \"trainer l1\" for a test of l1 or \"trainer l2\" for a test of l2 to the first line of your database. 
+Or input \"dic l1\" for a dictionary look-up of l1 or \"dic l2\" for a look-up of l2: > ";
 
 $inp = <STDIN>;
 chomp $inp;
@@ -48,28 +48,29 @@ while ($inp = <>)
 	}
 }
 
-print("\n". $num . " correct records processed.");
+print("\n$num correct records processed.");
+
+switch($mode[1])
+{
+	case "l2"
+	{
+		print "\ndirection: l1 -> l2\n\n";
+		$vocl1r = \@vocl1;
+		$vocl2r = \@vocl2;
+	}
+	case "l1"
+	{
+		print "\ndirection: l2 -> l1\n\n";
+		$vocl1r = \@vocl2;
+		$vocl2r = \@vocl1;
+	}
+}
 
 switch($mode[0])
 {
 	case "trainer" 
 	{
-		print("\nmode: vocabulary test");
-		switch($mode[1])
-		{
-			case "l2"
-			{
-				print("\ndirection: l1 -> l2\n\n");
-				$vocl1r = \@vocl1;
-				$vocl2r = \@vocl2;
-			}
-			case "l1"
-			{
-				print("\ndirection: l2 -> l1\n\n");
-				$vocl1r = \@vocl2;
-				$vocl2r = \@vocl1;
-			}
-		}
+		print "\nmode: vocabulary test\n";
 		
 		for (my $i = 0; $i < $num; ++$i) # has to be this type of loop because of the backsteps
 		{
@@ -98,7 +99,7 @@ switch($mode[0])
 			for (my $i = (scalar @wrongList) - 2; $i >= 0; --$i)
 			{
 				$ix = $wrongList[$i];
-				print("$vocl1r->[$ix] ?  > ");
+				print "$vocl1r->[$ix] ?  > ";
 				$inp = <STDIN>;
 				chomp $inp;
 				if ( lc($inp) eq lc($vocl2r->[$ix]) )
@@ -115,7 +116,29 @@ switch($mode[0])
 	}
 	case "dic"
 	{
-		print "\nNot yet implemented.";
+		print "\nmode: dictionary look-up\nEnter !exit to leave the program." ;
+
+		$inp = "foo";
+		while ($inp ne "!exit")
+		{
+			print "\nEnter a regular expression to search for: > ";
+			$inp = <STDIN>;
+			chomp $inp;
+
+			print "\nResults:\n";
+
+			my $count = 0;
+			for my $i (0..(scalar(@$vocl2r) - 1))
+			{
+				if ($vocl2r->[$i] =~ m/.*$inp.*/)
+				{
+					++$count;
+					print "$vocl1[$i] = $vocl2[$i]\n";
+				}
+			}
+
+			print "\nFound $count matches\n";
+		}
 	}
 }
 print "\n";

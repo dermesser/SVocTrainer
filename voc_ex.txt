@@ -19,3 +19,4 @@
 foo=bar
 linux=super
 git=genial
+windows=what´s that?
