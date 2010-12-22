@@ -30,7 +30,7 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
-print "\nPlease insert \"trainer l1\" for a test of l1 or \"trainer l2\" for a test of l2 to the first line of your database. 
+print "\nPlease type \"trainer l1\" for a test of l1 or \"trainer l2\" for a test of l2 . 
 Or input \"dic l1\" for a dictionary look-up of l1 or \"dic l2\" for a look-up of l2: > ";
 
 $inp = <STDIN>;
@@ -41,7 +41,7 @@ my $num = 0;
 while ($inp = <>)
 {
 	chomp $inp;
-	if (not ($inp =~ m/#.*/))
+	if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
 	{
 		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
 		++$num;
@@ -58,6 +58,7 @@ switch($mode[1])
 		$vocl1r = \@vocl1;
 		$vocl2r = \@vocl2;
 	}
+
 	case "l1"
 	{
 		print "\ndirection: l2 -> l1\n\n";
@@ -114,6 +115,7 @@ switch($mode[0])
 			}
 		}
 	}
+
 	case "dic"
 	{
 		print "\nmode: dictionary look-up\nEnter !exit to leave the program." ;
