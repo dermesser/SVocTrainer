@@ -22,13 +22,11 @@ use warnings;
 use strict;
 use Switch;
 
-#If you don't know a vocabulary, it's promted for it again twice: immediately after and in the end
-
 my $inp;
 my @vocl1;
 my @vocl2;
-my @vocl1r;
-my @vocl2r;
+my $vocl1r;
+my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
@@ -62,29 +60,29 @@ switch($mode[0])
 			case "l2"
 			{
 				print("\ndirection: l1 -> l2\n\n");
-				@vocl1r = @vocl1;
-				@vocl2r = @vocl2;
+				$vocl1r = \@vocl1;
+				$vocl2r = \@vocl2;
 			}
 			case "l1"
 			{
 				print("\ndirection: l2 -> l1\n\n");
-				@vocl1r = @vocl2;
-				@vocl2r = @vocl1;
+				$vocl1r = \@vocl2;
+				$vocl2r = \@vocl1;
 			}
 		}
 		
 		for (my $i = 0; $i < $num; ++$i) # has to be this type of loop because of the backsteps
 		{
-			print(($i+1) . "/$num: $vocl1r[$i] ?  > ");
+			print(($i+1) . "/$num: $vocl1r->[$i] ?  > ");
 			$inp = <STDIN>;
 			chomp $inp;
-			if ( lc($inp) eq lc($vocl2r[$i]) )
+			if ( lc($inp) eq lc($vocl2r->[$i]) )
 			{
 				print "Correct!\n";
 			}
 			else
 			{
-				print "Wrong! Correct was: $vocl2r[$i]\n";
+				print "Wrong! Correct was: $vocl2r->[$i]\n";
 				if (not ($wrongList[0] == $i))
 				{
 					unshift @wrongList, $i;
@@ -100,17 +98,17 @@ switch($mode[0])
 			for (my $i = (scalar @wrongList) - 2; $i >= 0; --$i)
 			{
 				$ix = $wrongList[$i];
-				print("$vocl1r[$ix] ?  > ");
+				print("$vocl1r->[$ix] ?  > ");
 				$inp = <STDIN>;
 				chomp $inp;
-				if ( lc($inp) eq lc($vocl2r[$ix]) )
+				if ( lc($inp) eq lc($vocl2r->[$ix]) )
 				{
 					print "Correct!\n";
 					splice @wrongList, $i, 1;
 				}
 				else
 				{
-					print "Wrong! Correct was: $vocl2r[$ix]\n";
+					print "Wrong! Correct was: $vocl2r->[$ix]\n";
 				}
 			}
 		}
