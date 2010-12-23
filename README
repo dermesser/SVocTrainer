@@ -21,7 +21,7 @@ For the syntax of the vocabulary db, see the example file (voc_ex.txt).
 There is no installation required, simply run the script SVocTrainer.pl in a shell.
 
 Requirements:
-- a perl distribution with the additional perl module "Switch"
+- a perl distribution
 
 For more information and the latest version, see our project site at svoctrainer.sourceforge.net
 
