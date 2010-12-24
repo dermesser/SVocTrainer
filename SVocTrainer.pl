@@ -65,7 +65,7 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 {
 	print "\nmode: vocabulary test\n";
 
-	for (my $i = 0; $i < $num; ++$i) # has to be this type of loop because of the backsteps
+	for (my $i = 0; $i < $num; ++$i) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
 		print(($i+1) . "/$num: $vocl1r->[$i] ?  > ");
 		$inp = <STDIN>;
