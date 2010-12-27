@@ -111,28 +111,25 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 {
 	print "\nmode: dictionary look-up\nEnter nothing to leave the program." ;
 
-	$inp = "foo";
-	while ($inp ne "")
+	while (1) # loop is terminated with last
 	{
 		print "\nEnter a regular expression to search for: > ";
 		$inp = <STDIN>;
 		chomp $inp;
-		if ($inp ne "")
+		last if ($inp eq ""); # exit loop if input was empty
+		print "\nResults:\n";
+
+		my $count = 0;
+		for my $i (0..(scalar(@$vocl2r) - 1))
 		{
-			print "\nResults:\n";
-
-			my $count = 0;
-			for my $i (0..(scalar(@$vocl2r) - 1))
+			if ($vocl2r->[$i] =~ m/.*$inp.*/ )
 			{
-				if ($vocl2r->[$i] =~ m/.*$inp.*/ )
-				{
-					++$count;
-					print "$vocl1[$i] = $vocl2[$i]\n";
-				}
+				++$count;
+				print "$vocl1[$i] = $vocl2[$i]\n";
 			}
-
-			print "\nFound $count matches\n";
 		}
+
+		print "\nFound $count matches\n";
 	}
 }
 
