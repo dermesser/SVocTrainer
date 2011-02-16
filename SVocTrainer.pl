@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2010 LLynx, Der Messer
+# Copyright 2010 LLynx, dermesser
 
 #    This file is part of SVocTrainer.
 #
