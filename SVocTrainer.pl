@@ -31,9 +31,9 @@ my $ix;
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
-    my $input = <STDIN>;
-    chomp($input);
-    return $input;
+	my $input = <STDIN>;
+	chomp($input);
+	return $input;
 }
 
 print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and
@@ -45,12 +45,12 @@ my @mode = split(" ",$inp);
 my $num = 0;
 while ($inp = <>)
 {
-    chomp($inp);
-    if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
-    {
-	    ( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
-	    ++$num;
-    }
+	chomp($inp);
+	if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
+	{
+		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
+		++$num;
+	}
 }
 
 print("\n$num correct records processed.");
@@ -127,22 +127,23 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 		my $count = 0;
 		for my $i (0..(scalar(@vocl1) - 1))
 		{
-		    if ($vocl1[$i] =~ m/.*$inp.*/ )
-		    {
-			++$count;
-			print "$vocl1[$i] = $vocl2[$i]\n";
-		    }
+			if ($vocl1[$i] =~ m/.*$inp.*/ )
+			{
+				++$count;
+				print "$vocl1[$i] = $vocl2[$i]\n";
+			}
 		}
 		for my $i (0..(scalar(@vocl2) - 1))
 		{
-		    if ($vocl2[$i] =~ m/.*$inp.*/ )
-		    {
-			++$count;
-			print "$vocl2[$i] = $vocl1[$i]\n";
-		    }
+			if ($vocl2[$i] =~ m/.*$inp.*/ )
+			{
+				++$count;
+				print "$vocl2[$i] = $vocl1[$i]\n";
+			}
 		}
 		print "\nFound $count matches\n";
 	}
 }
 
 print "\n";
+
