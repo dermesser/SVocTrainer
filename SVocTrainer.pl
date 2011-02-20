@@ -29,7 +29,8 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
-print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and \"language\" is either l1 or l2. > ";
+print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and
+\"language\" is (as asked language, only for [t]rainer) either l1 or l2. > ";
 
 $inp = <STDIN>;
 chomp $inp;
@@ -39,7 +40,7 @@ my $num = 0;
 while ($inp = <>)
 {
 	chomp $inp;
-	if (not (($inp =~ m/^#.*/) or ($inp =~ m/^$/)))
+	if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
 	{
 		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
 		++$num;
@@ -48,13 +49,13 @@ while ($inp = <>)
 
 print("\n$num correct records processed.");
 
-if ($mode[1] eq "l2" or $mode[1] eq "2" )
+if (($mode[0] eq "t" or $mode[0] eq "trainer") and ($mode[1] eq "l2" or $mode[1] eq "2"))
 {
 	print "\ndirection: l1 -> l2\n\n";
 	$vocl1r = \@vocl1;
 	$vocl2r = \@vocl2;
 }
-elsif ($mode[1] eq "l1" or $mode[1] eq "1" )
+elsif (($mode[0] eq "t" or $mode[0] eq "trainer") and ($mode[1] eq "l1" or $mode[1] eq "1"))
 {
 	print "\ndirection: l2 -> l1\n\n";
 	$vocl1r = \@vocl2;
@@ -120,15 +121,22 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 		print "\nResults:\n";
 
 		my $count = 0;
-		for my $i (0..(scalar(@$vocl2r) - 1))
+		for my $i (0..(scalar(@vocl1) - 1))
 		{
-			if ($vocl2r->[$i] =~ m/.*$inp.*/ )
-			{
-				++$count;
-				print "$vocl1[$i] = $vocl2[$i]\n";
-			}
+		    if ($vocl1[$i] =~ m/.*$inp.*/ )
+		    {
+			++$count;
+			print "$vocl1[$i] = $vocl2[$i]\n";
+		    }
 		}
-
+		for my $i (0..(scalar(@vocl2) - 1))
+		{
+		    if ($vocl2[$i] =~ m/.*$inp.*/ )
+		    {
+			++$count;
+			print "$vocl2[$i] = $vocl1[$i]\n";
+		    }
+		}
 		print "\nFound $count matches\n";
 	}
 }
