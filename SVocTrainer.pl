@@ -29,22 +29,28 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
+sub readnchomp # this subroutine reads and chomps at the same time via STDIN
+{
+    my $input = <STDIN>;
+    chomp($input);
+    return $input;
+}
+
 print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and
 \"language\" is (as asked language, only for [t]rainer) either l1 or l2. > ";
 
-$inp = <STDIN>;
-chomp $inp;
+$inp = readnchomp();
 my @mode = split(" ",$inp);
 
 my $num = 0;
 while ($inp = <>)
 {
-	chomp $inp;
-	if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
-	{
-		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
-		++$num;
-	}
+    chomp($inp);
+    if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
+    {
+	    ( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
+	    ++$num;
+    }
 }
 
 print("\n$num correct records processed.");
@@ -69,8 +75,7 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 	for (my $i = 0; $i < $num; ++$i) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
 		print(($i+1) . "/$num: $vocl1r->[$i] ?  > ");
-		$inp = <STDIN>;
-		chomp $inp;
+		$inp = readnchomp();
 		if ( lc($inp) eq lc($vocl2r->[$i]) )
 		{
 			print "Correct!\n";
@@ -115,8 +120,7 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 	while (1) # loop is terminated with last
 	{
 		print "\nEnter a regular expression to search for: > ";
-		$inp = <STDIN>;
-		chomp $inp;
+		$inp = readnchomp();
 		last if ($inp eq ""); # exit loop if input was empty
 		print "\nResults:\n";
 
@@ -142,4 +146,3 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 }
 
 print "\n";
-
