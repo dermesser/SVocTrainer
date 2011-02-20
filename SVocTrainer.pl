@@ -29,7 +29,7 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
-sub readnchomp # this subroutine reads and chomps at the same time via STDIN
+sub readnchomp        # this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
 	chomp($input);
@@ -37,7 +37,7 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 }
 
 print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and
-\"language\" is (as asked language, only for [t]rainer) either l1 or l2. > ";
+\"language\" is either l1 or l2. (The parameter \"language\" is only needed in trainer mode and can be left out in dictionary mode.) > ";
 
 $inp = readnchomp();
 my @mode = split(" ",$inp);
