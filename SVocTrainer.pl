@@ -29,15 +29,15 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
-sub readnchomp # this subroutine reads and chomps at the same time via STDIN
+sub readnchomp        # this subroutine reads and chomps at the same time via STDIN
 {
-    my $input = <STDIN>;
-    chomp($input);
-    return $input;
+	my $input = <STDIN>;
+	chomp($input);
+	return $input;
 }
 
 print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and
-\"language\" is (as asked language, only for [t]rainer) either l1 or l2. > ";
+\"language\" is either l1 or l2. (The parameter \"language\" is only needed in trainer mode and can be left out in dictionary mode.) > ";
 
 $inp = readnchomp();
 my @mode = split(" ",$inp);
@@ -45,12 +45,12 @@ my @mode = split(" ",$inp);
 my $num = 0;
 while ($inp = <>)
 {
-    chomp($inp);
-    if (not (($inp =~ m/#.*/) or ($inp =~ m/^$/)))
-    {
-	    ( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
-	    ++$num;
-    }
+	chomp $inp;
+	if (not (($inp =~ m/^#.*/) or ($inp =~ m/^$/)))
+	{
+		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
+		++$num;
+	}
 }
 
 print("\n$num correct records processed.");
@@ -126,22 +126,26 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 		my $count = 0;
 		for my $i (0..(scalar(@vocl1) - 1))
 		{
-		    if ($vocl1[$i] =~ m/.*$inp.*/ )
-		    {
-			++$count;
-			print "$vocl1[$i] = $vocl2[$i]\n";
-		    }
+			if ($vocl1[$i] =~ m/.*$inp.*/ )
+			{
+				++$count;
+				print "$vocl1[$i] = $vocl2[$i]\n";
+			}
 		}
 		for my $i (0..(scalar(@vocl2) - 1))
 		{
-		    if ($vocl2[$i] =~ m/.*$inp.*/ )
-		    {
-			++$count;
-			print "$vocl2[$i] = $vocl1[$i]\n";
-		    }
+			if ($vocl2[$i] =~ m/.*$inp.*/ )
+			{
+				++$count;
+				print "$vocl2[$i] = $vocl1[$i]\n";
+			}
 		}
 		print "\nFound $count matches\n";
 	}
 }
 
 print "\n";
+<<<<<<< HEAD
+=======
+
+>>>>>>> ebd2c591e8feeeaf4280f83281b652fc5fe506f9
