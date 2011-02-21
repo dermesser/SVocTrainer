@@ -29,7 +29,7 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 
-sub readnchomp        # this subroutine reads and chomps at the same time via STDIN
+sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
 	chomp($input);
@@ -46,7 +46,7 @@ my $num = 0;
 while ($inp = <>)
 {
 	chomp $inp;
-	if (not (($inp =~ m/^#.*/) or ($inp =~ m/^$/)))
+	if (not (($inp =~ m/^\s*#.*/) or ($inp =~ m/^$/)))
 	{
 		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
 		++$num;
@@ -83,7 +83,7 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 		else
 		{
 			print "Wrong! Correct was: $vocl2r->[$i]\n";
-			if (not ($wrongList[0] == $i))
+			if (($wrongList[0] != $i))
 			{
 				unshift @wrongList, $i;
 			}
@@ -93,7 +93,7 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 
 	pop @wrongList;
 
-	print "\nYou knew " . ( $num - ( scalar @wrongList ) ) . " out of $num \n\n";
+	print "\nYou knew " . ($num - (scalar @wrongList)) . " out of $num \n\n";
 
 	while (scalar @wrongList > 0)
 	{
