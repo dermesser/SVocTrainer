@@ -19,9 +19,5 @@
 foo=bar
 linux=super
 git=genial
-<<<<<<< HEAD
-windows=what´s that?
 umlaute=möglich
-=======
 windows=sounds ugly
->>>>>>> ebd2c591e8feeeaf4280f83281b652fc5fe506f9
