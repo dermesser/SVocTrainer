@@ -21,3 +21,5 @@ linux=super
 git=genial
 umlaute=möglich
 windows=sounds ugly
+test=test
+x=y

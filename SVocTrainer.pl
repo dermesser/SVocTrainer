@@ -93,7 +93,8 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 
 	pop @wrongList;
 
-	print "\nYou knew " . ($num - (scalar @wrongList)) . " out of $num \n\n";
+	my $correctNum = $num - scalar @wrongList;
+	printf("\nYou knew %i out of %i, which are %i percent.\n\n", $correctNum, $num, $correctNum / $num * 100);
 
 	while (scalar @wrongList > 0)
 	{
