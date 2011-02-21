@@ -91,11 +91,13 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 		}
 	}
 
-	print "\nYou knew " . ($num - (scalar @wrongList) + 1) . " out of " . ($num) . "\n\n";
+	pop @wrongList;
 
-	while (scalar @wrongList > 1)
+	print "\nYou knew " . ( $num - ( scalar @wrongList ) ) . " out of $num \n\n";
+
+	while (scalar @wrongList > 0)
 	{
-		for (my $i = (scalar @wrongList) - 2; $i >= 0; --$i)
+		for (my $i = (scalar @wrongList) - 1; $i >= 0; --$i)
 		{
 			$ix = $wrongList[$i];
 			print "$vocl1r->[$ix] ?  > ";
