@@ -145,7 +145,4 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 }
 
 print "\n";
-<<<<<<< HEAD
-=======
 
->>>>>>> ebd2c591e8feeeaf4280f83281b652fc5fe506f9
