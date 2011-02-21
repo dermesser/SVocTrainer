@@ -99,8 +99,7 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 		{
 			$ix = $wrongList[$i];
 			print "$vocl1r->[$ix] ?  > ";
-			$inp = <STDIN>;
-			chomp $inp;
+			$inp = readnchomp();
 			if ( lc($inp) eq lc($vocl2r->[$ix]) )
 			{
 				print "Correct!\n";
