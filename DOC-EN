@@ -16,10 +16,12 @@ along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------------
 
 For important notices see README in this directory.
+Attention: The code examples are only readable for experienced perl developers! ;-)
 
 
-DOCUMENTATION FOR "SVoctrainer"
-=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+					DOCUMENTATION FOR "SVoctrainer"
+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+#############################################################################################################################
 
 This is the documentation for the perl program (yes, I find we should call it a program, it doesn't have got features that a script has got) SVocTrainer.
 SVocTrainer stands for Simple Vocabulary Trainer which completely describes this program. It's a really simple vocabulary trainer, without features like
@@ -35,22 +37,21 @@ SVoctrainer uses standard text files for storing the vocabulary. You only need a
 # Comments are ignored
 # Also empty lines are ignored
 
-# The you have to write the vocabulary as l1=l2:
+# You have to write the vocabulary as l1=l2:
 l1=l2
-vim=editor
-windows=hah?
-linux=iloveit
-sourceforge=genial
-# Some comments in the vocabulary can structure the file
-me=dermesser
-perl=programming language
-umlaute=möglich
-street=Straße
-# More vocabulary lasts longer at reading by the program
+festival=un festival
+the sun=le soleil
+a girl=une fille
+# Well, some special characters are very difficult to write in vi ;-)
+a boy=un garcon
+mineral water=l'eau de minerale
 
 ================= </EXAMPLE> ===============
 
-To use the script, save your vocabulary in a file, e.g. 'vocs_test.txt', and type into your shell:
+  				 USE THE PROGRAM
+######################################################################################
+
+To use the program, save your vocabulary in a file, e.g. 'vocs_test.txt', and type into your shell:
 
 $ ./SVocTrainer.pl vocs_test.txt
 
@@ -59,15 +60,42 @@ Then the script starts and asks you which mode to use. Here you can choose:
 'd' or 'dictionary' - this mode allows you to ask the vocabulary database.
 't' or 'trainer'    - this mode asks you the words. 
 
-At the current version of the program you have only to type the language direction for training mode:
+*** USE THE TRAINING MODE ***
 
-'trainer l1'  - if you type 'trainer l1' the program asks you the vocabulary in the l2 column and you have to type the l1 words. Example (see the table above)
+IF you use the training mode, you also have to give the direction to the program. That can you do as following:
 
+'t l1'  -  asks you the words of the l1 column. It shows the l2-word and you have to type the related l1-word.
+'t l2'  -  ---- --- --- ----- -- --- l2 ------- -- ----- --- l1----- --- --- ---- -- ---- --- ------- l2-----.
+
+Example with chosen 't l1':
 ===== BEGIN SVOCTRAINER OUTPUT =====
 1/9: l2? >                  ### Here you have to type 'l1' ###
-2/9: editor? >              ### and here you type 'vim'    ###
-3/9: hah? >                 ### right, here you have to type 'windows' ###
+2/9: un festival? >         ### and here you type 'festival'    ###
+3/9: le soleil? >           ### right, here you have to type 'the sun' ###
 ===== END SVOCTRAINER OUTPUT =====
+
+*** USE THE DICTIONARY MODE ***
+
+The dictionary mode uses regular expressions to find matches. We have used a RegEx like the following one:
+
+==== Code Example ====
+$inp = readnchomp(); # reads the input of the user, e.g.: 'il'
+...  ### Some lines
+...  ### of code...
+if ( $vocl1[$i] =~ m/.*$inp.*/ )
+{...}
+==== /Code Example ====
+
+This regex finds with the input 'il' all words with an 'il' inside, and gives (probably) following output:
+
+==== Program Output ====
+le soleil = the sun
+une fille = a girl
+
+Found 2 matches
+==== /Program output ====
+
+If there was at the l1 column a word with 'il' inside, svoctrainer would find it, too.
 
 
 +++++++++ ADDITIONAL NOTICES ++++++++

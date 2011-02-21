@@ -46,7 +46,7 @@ my $num = 0;
 while ($inp = <>)
 {
 	chomp $inp;
-	if (not (($inp =~ m/^\s*#.*/) or ($inp =~ m/^$/)))
+	if (not (($inp =~ m/^\s*#.*/) or ($inp =~ m/^$/))) 
 	{
 		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
 		++$num;
