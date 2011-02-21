@@ -25,3 +25,7 @@ Requirements:
 
 For more information and the latest version, see our project site at svoctrainer.sourceforge.net
 There is also a documentation file, see "DOC".
+
+To start the script, type the following into your shell:
+
+$ ./SVocTrainer file_with_vocabulary.txt

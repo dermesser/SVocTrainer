@@ -1,0 +1,79 @@
+This file is part of SVocTrainer.
+
+SVocTrainer is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SVocTrainer is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
+
+----------------------------------------------------------------------------
+
+For important notices see README in this directory.
+
+
+DOCUMENTATION FOR "SVoctrainer"
+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+This is the documentation for the perl program (yes, I find we should call it a program, it doesn't have got features that a script has got) SVocTrainer.
+SVocTrainer stands for Simple Vocabulary Trainer which completely describes this program. It's a really simple vocabulary trainer, without features like
+- a GUI
+- big DB-Systems like MySQL
+- slowness
+- fussiness...
+
+SVoctrainer uses standard text files for storing the vocabulary. You only need a normal text editor supporting UTF-8 and iso-8859-1 and UNIX line breaks. Then you write a file formatted as following:
+
+================= <EXAMPLE> ================
+
+# Comments are ignored
+# Also empty lines are ignored
+
+# The you have to write the vocabulary as l1=l2:
+l1=l2
+vim=editor
+windows=hah?
+linux=iloveit
+sourceforge=genial
+# Some comments in the vocabulary can structure the file
+me=dermesser
+perl=programming language
+umlaute=möglich
+street=Straße
+# More vocabulary lasts longer at reading by the program
+
+================= </EXAMPLE> ===============
+
+To use the script, save your vocabulary in a file, e.g. 'vocs_test.txt', and type into your shell:
+
+$ ./SVocTrainer.pl vocs_test.txt
+
+Then the script starts and asks you which mode to use. Here you can choose:
+
+'d' or 'dictionary' - this mode allows you to ask the vocabulary database.
+'t' or 'trainer'    - this mode asks you the words. 
+
+At the current version of the program you have only to type the language direction for training mode:
+
+'trainer l1'  - if you type 'trainer l1' the program asks you the vocabulary in the l2 column and you have to type the l1 words. Example (see the table above)
+
+===== BEGIN SVOCTRAINER OUTPUT =====
+1/9: l2? >                  ### Here you have to type 'l1' ###
+2/9: editor? >              ### and here you type 'vim'    ###
+3/9: hah? >                 ### right, here you have to type 'windows' ###
+===== END SVOCTRAINER OUTPUT =====
+
+
++++++++++ ADDITIONAL NOTICES ++++++++
+
+* Coding of the vocabulary DB: UTF-8 is recommended for standard perl and bash >=3.00
+* For standard perl, the line break of all used files has to be UNIX/LINUX, not mac, not dos. If you have to modify the line break, use mac2unix, dos2unix...
+* For more questions write a mail to <der.messer@web.de> (Development and documentation)
+* If you find a bug or a fault in the Documentation, the program or elsewhere, send an email to <falconl@ymail.com> or, which is better, to both <falconl@ymail.com> and <der.messer@web.de>.
+
