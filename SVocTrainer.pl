@@ -132,20 +132,27 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 		print "\nResults:\n";
 
 		my $count = 0;
-		for my $i (0..(scalar(@vocl1) - 1))
+
+		if ($mode[1] == 1 or $mode[1] == b)
 		{
-			if ($vocl1[$i] =~ m/.*$inp.*/ )
+			for my $i (0..(scalar(@vocl1) - 1))
 			{
-				++$count;
-				print "$vocl1[$i] = $vocl2[$i]\n";
+				if ($vocl1[$i] =~ m/.*$inp.*/ )
+				{
+					++$count;
+					print "$vocl1[$i] = $vocl2[$i]\n";
+				}
 			}
 		}
-		for my $i (0..(scalar(@vocl2) - 1))
+		if ($mode[1] == 2 or $mode[1] == b)
 		{
-			if ($vocl2[$i] =~ m/.*$inp.*/ )
+			for my $i (0..(scalar(@vocl2) - 1))
 			{
-				++$count;
-				print "$vocl2[$i] = $vocl1[$i]\n";
+				if ($vocl2[$i] =~ m/.*$inp.*/ )
+				{
+					++$count;
+					print "$vocl2[$i] = $vocl1[$i]\n";
+				}
 			}
 		}
 		print "\nFound $count matches\n";
