@@ -37,11 +37,13 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 	return $input;
 }
 
-print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or \[d\]ictionary and
-\"language\" is either l1 or l2. (The parameter \"language\" is only needed in trainer mode and can be left out in dictionary mode.) > ";
+if (scalar @ARGV != 3)
+{
+	print "Wrong number of parameters!\n\n";
+	exit;
+}
 
-$inp = readnchomp();
-my @mode = split(" ",$inp);
+my @mode = ( $ARGV[1], $ARGV[2] );
 
 open($vocFile, $ARGV[0]) or die "Couldn't read $ARGV[0]";
 
