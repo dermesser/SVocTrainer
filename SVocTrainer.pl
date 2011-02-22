@@ -33,11 +33,11 @@ my $vocFile;
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
-	chomp($input);
+	chomp $input;
 	return $input;
 }
 
-if (scalar @ARGV != 3)
+if ( scalar @ARGV != 3)
 {
 	print "Wrong number of parameters!\n\n";
 	exit;
@@ -45,52 +45,52 @@ if (scalar @ARGV != 3)
 
 my @mode = ( $ARGV[1], $ARGV[2] );
 
-open($vocFile, $ARGV[0]) or die "Couldn't read $ARGV[0]";
+open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
 
 my $num = 0;
-while ($inp = <$vocFile>)
+while ( $inp = <$vocFile> )
 {
 	chomp $inp;
-	if (not (($inp =~ m/^\s*#.*/) or ($inp =~ m/^$/)))
+	if ( not ( ( $inp =~ m/^\s*#.*/ ) or ( $inp =~ m/^$/ ) ) )
 	{
-		( $vocl1[$num], $vocl2[$num] ) = split( "=",$inp);
+		( $vocl1[$num], $vocl2[$num] ) = split( "=", $inp );
 		++$num;
 	}
 }
 
 close $vocFile;
 
-print("\n$num correct records processed.");
+print "\n$num correct records processed." ;
 
-if (($mode[0] eq "t" or $mode[0] eq "trainer") and ($mode[1] eq "l2" or $mode[1] eq "2"))
+if ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l2" or $mode[1] eq "2" ) )
 {
 	print "\ndirection: l1 -> l2\n\n";
 	$vocl1r = \@vocl1;
 	$vocl2r = \@vocl2;
 }
-elsif (($mode[0] eq "t" or $mode[0] eq "trainer") and ($mode[1] eq "l1" or $mode[1] eq "1"))
+elsif ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l1" or $mode[1] eq "1" ) )
 {
 	print "\ndirection: l2 -> l1\n\n";
 	$vocl1r = \@vocl2;
 	$vocl2r = \@vocl1;
 }
 
-if ($mode[0] eq "trainer" or $mode[0] eq "t" )
+if ( $mode[0] eq "trainer" or $mode[0] eq "t" )
 {
 	print "\nmode: vocabulary test\n";
 
-	for (my $i = 0; $i < $num; ++$i) # has to be this type of loop because of the backstep if an answer wasn't correct
+	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
-		print(($i+1) . "/$num: $vocl1r->[$i] ?  > ");
+		print( ( $i+1 ) . "/$num: $vocl1r->[$i] ?  > " );
 		$inp = readnchomp();
-		if ( lc($inp) eq lc($vocl2r->[$i]) )
+		if ( lc( $inp ) eq lc( $vocl2r->[$i] ) )
 		{
 			print "Correct!\n";
 		}
 		else
 		{
 			print "Wrong! Correct was: $vocl2r->[$i]\n";
-			if (($wrongList[0] != $i))
+			if ( ( $wrongList[0] != $i ) )
 			{
 				unshift @wrongList, $i;
 			}
@@ -101,16 +101,16 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 	pop @wrongList;
 
 	my $correctNum = $num - scalar @wrongList;
-	printf("\nYou knew %i out of %i, which are %i percent.\n\n", $correctNum, $num, $correctNum / $num * 100);
+	printf( "\nYou knew %i out of %i, which are %i percent.\n\n", $correctNum, $num, $correctNum / $num * 100 );
 
 	while (scalar @wrongList > 0)
 	{
-		for (my $i = (scalar @wrongList) - 1; $i >= 0; --$i)
+		for ( my $i = scalar @wrongList - 1; $i >= 0; --$i )
 		{
 			$ix = $wrongList[$i];
 			print "$vocl1r->[$ix] ?  > ";
 			$inp = readnchomp();
-			if ( lc($inp) eq lc($vocl2r->[$ix]) )
+			if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
 			{
 				print "Correct!\n";
 				splice @wrongList, $i, 1;
@@ -122,35 +122,35 @@ if ($mode[0] eq "trainer" or $mode[0] eq "t" )
 		}
 	}
 }
-elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
+elsif ( $mode[0] eq "dictionary" or $mode[0] eq "d" )
 {
-	print "\nmode: dictionary look-up\nEnter nothing to leave the program." ;
+	print "\nmode: dictionary look-up\nEnter nothing to leave the program.";
 
-	while (1) # loop is terminated with last
+	while ( 1 ) # loop is terminated with last
 	{
 		print "\nEnter a regular expression to search for: > ";
 		$inp = readnchomp();
-		last if ($inp eq ""); # exit loop if input was empty
+		last if ( $inp eq "" ); # exit loop if input was empty
 		print "\nResults:\n";
 
 		my $count = 0;
 
-		if ($mode[1] eq "l1" or $mode[1] eq "1" or $mode[1] eq "bidirectional" or $mode[1] eq "b")
+		if ( $mode[1] eq "l1" or $mode[1] eq "1" or $mode[1] eq "bidirectional" or $mode[1] eq "b" )
 		{
-			for my $i (0..(scalar(@vocl1) - 1))
+			for my $i ( 0..( scalar @vocl1  - 1 ) )
 			{
-				if ($vocl1[$i] =~ m/.*$inp.*/ )
+				if ( $vocl1[$i] =~ m/.*$inp.*/ )
 				{
 					++$count;
 					print "$vocl1[$i] = $vocl2[$i]\n";
 				}
 			}
 		}
-		if ($mode[1] eq "l2" or $mode[1] eq "2" or $mode[1] eq "bidirectional" or $mode[1] eq "b")
+		if ( $mode[1] eq "l2" or $mode[1] eq "2" or $mode[1] eq "bidirectional" or $mode[1] eq "b" )
 		{
-			for my $i (0..(scalar(@vocl2) - 1))
+			for my $i ( 0..( scalar @vocl2 - 1 ) )
 			{
-				if ($vocl2[$i] =~ m/.*$inp.*/ )
+				if ( $vocl2[$i] =~ m/.*$inp.*/ )
 				{
 					++$count;
 					print "$vocl1[$i] = $vocl2[$i]\n";
