@@ -153,7 +153,7 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 				if ($vocl2[$i] =~ m/.*$inp.*/ )
 				{
 					++$count;
-					print "$vocl2[$i] = $vocl1[$i]\n";
+					print "$vocl1[$i] = $vocl2[$i]\n";
 				}
 			}
 		}
