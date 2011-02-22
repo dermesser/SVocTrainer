@@ -28,6 +28,7 @@ my $vocl1r;
 my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
+my $vocFile;
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
@@ -42,8 +43,10 @@ print "\nPlease type \"mode language\", where \"mode\" is either \[t\]rainer or 
 $inp = readnchomp();
 my @mode = split(" ",$inp);
 
+open($vocFile, $ARGV[0]) or die "Couldn't read $ARGV[0]";
+
 my $num = 0;
-while ($inp = <>)
+while ($inp = <$vocFile>)
 {
 	chomp $inp;
 	if (not (($inp =~ m/^\s*#.*/) or ($inp =~ m/^$/)))
@@ -52,6 +55,8 @@ while ($inp = <>)
 		++$num;
 	}
 }
+
+close $vocFile;
 
 print("\n$num correct records processed.");
 
