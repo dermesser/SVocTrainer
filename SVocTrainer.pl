@@ -133,7 +133,7 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 
 		my $count = 0;
 
-		if ($mode[1] == 1 or $mode[1] == b)
+		if ($mode[1] eq "l1" or $mode[1] eq "1" or $mode[1] eq "bidirectional" or $mode[1] eq "b")
 		{
 			for my $i (0..(scalar(@vocl1) - 1))
 			{
@@ -144,7 +144,7 @@ elsif ($mode[0] eq "dictionary" or $mode[0] eq "d" )
 				}
 			}
 		}
-		if ($mode[1] == 2 or $mode[1] == b)
+		if ($mode[1] eq "l2" or $mode[1] eq "2" or $mode[1] eq "bidirectional" or $mode[1] eq "b")
 		{
 			for my $i (0..(scalar(@vocl2) - 1))
 			{
