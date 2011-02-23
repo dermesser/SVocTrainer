@@ -29,6 +29,7 @@ my $vocl2r;
 my @wrongList = (-1); # -1 or any other invalid number
 my $ix;
 my $vocFile;
+my @order;
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
@@ -37,13 +38,13 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 	return $input;
 }
 
-if ( scalar @ARGV != 3)
+if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" or $ARGV[1] eq "trainer") ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" or $ARGV[1] eq "dictionary") ) ) )
 {
 	print "Wrong number of parameters!\n\n";
 	exit;
 }
 
-my @mode = ( $ARGV[1], $ARGV[2] );
+my @mode = ( $ARGV[1], $ARGV[2], $ARGV[3] );
 
 open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
 
@@ -60,8 +61,35 @@ while ( $inp = <$vocFile> )
 
 close $vocFile;
 
-print "\n$num correct records processed." ;
-
+print "\n$num correct records processed.\n" ;
+## Here is the list of order (@order) generated. it says in which order the words are asked.
+if ( $mode[0] eq "t" or $mode[0] eq "trainer")
+{
+	if ( $mode[2] eq "o" )
+	{
+		for my $i (0..($num - 1))
+		{
+			$order[$i] = $i;
+		}
+		print("Order is linear (1,2,3...) \n");
+	} elsif ( $mode[2] eq "r" )
+	{
+		my @a;
+		my $rand;
+		for my $i (0..($num - 1))
+		{
+		    $a[$i] = $i;
+		}
+		for my $i (0..($num - 1))
+		{
+		    $rand = rand((scalar @a - 1));
+		    $rand = sprintf("%u",$rand);
+		    $order[$i] = $a[$rand];
+		    splice(@a,$rand,1);
+		}
+		print("Random order was chosen. Is it really random? @order[0,1,2,3]\n");
+	}
+}
 if ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l2" or $mode[1] eq "2" ) )
 {
 	print "\ndirection: l1 -> l2\n\n";
@@ -79,7 +107,7 @@ if ( $mode[0] eq "trainer" or $mode[0] eq "t" )
 {
 	print "\nmode: vocabulary test\n";
 
-	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
+	for my $i (@order)
 	{
 		print( ( $i+1 ) . "/$num: $vocl1r->[$i] ?  > " );
 		$inp = readnchomp();
@@ -94,7 +122,6 @@ if ( $mode[0] eq "trainer" or $mode[0] eq "t" )
 			{
 				unshift @wrongList, $i;
 			}
-			--$i;
 		}
 	}
 
