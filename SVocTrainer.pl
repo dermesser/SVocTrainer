@@ -51,9 +51,9 @@ my $num = 0;
 while ( $inp = <$vocFile> )
 {
 	chomp $inp;
-	if ( not ( ( $inp =~ m/^\s*#.*/ ) or ( $inp =~ m/^$/ ) ) )
+	if ( $inp =~ m/^\s*([^=#]*[^=#\s])\s*=\s*([^=#]*[^=#\s]).*$/ )
 	{
-		( $vocl1[$num], $vocl2[$num] ) = split( "=", $inp );
+		( $vocl1[$num], $vocl2[$num] ) = ( $1, $2 );
 		++$num;
 	}
 }
