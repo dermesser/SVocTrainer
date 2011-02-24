@@ -65,6 +65,8 @@ print "\n$num correct records processed.\n" ;
 
 if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 {
+	print "\nmode: vocabulary test\n";
+
 	# generation of the @order array
 	if ( $mode[2] eq "l" )
 	{
@@ -97,18 +99,17 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 
 	if ( $mode[1] eq "l2" or $mode[1] eq "2" )
 	{
-		print "\ndirection: l1 -> l2\n\n";
+		print "direction: l1 -> l2\n\n";
 		$vocl1r = \@vocl1;
 		$vocl2r = \@vocl2;
 	}
 	elsif ( $mode[1] eq "l1" or $mode[1] eq "1" )
 	{
-		print "\ndirection: l2 -> l1\n\n";
+		print "direction: l2 -> l1\n\n";
 		$vocl1r = \@vocl2;
 		$vocl2r = \@vocl1;
 	}
 
-	print "\nmode: vocabulary test\n";
 
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
@@ -157,11 +158,11 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 }
 elsif ( $mode[0] eq "dictionary" or $mode[0] eq "d" )
 {
-	print "\nmode: dictionary look-up\nEnter nothing to leave the program.";
+	print "\nmode: dictionary look-up\n\nEnter nothing to leave the program.";
 
 	while ( 1 ) # loop is terminated with last
 	{
-		print "\nEnter a regular expression to search for: > ";
+		print "\n\nEnter a regular expression to search for: > ";
 		$inp = readnchomp();
 		last if ( $inp eq "" ); # exit loop if input was empty
 		print "\nResults:\n";
