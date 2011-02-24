@@ -62,49 +62,53 @@ while ( $inp = <$vocFile> )
 close $vocFile;
 
 print "\n$num correct records processed.\n" ;
-## Here is the list of order (@order) generated. it says in which order the words are asked.
-if ( $mode[0] eq "t" or $mode[0] eq "trainer")
+
+if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 {
-	if ( $mode[2] eq "o" )
+	# generation of the @order array
+	if ( $mode[2] eq "l" )
 	{
-		for my $i (0..($num - 1))
+		for my $i ( 0..( $num - 1 ) )
 		{
 			$order[$i] = $i;
 		}
-		print("Order is linear (1,2,3...) \n");
-	} elsif ( $mode[2] eq "r" )
+
+		print "order: linear\n";
+	}
+	elsif ( $mode[2] eq "r" )
 	{
 		my @a;
 		my $rand;
-		for my $i (0..($num - 1))
-		{
-		    $a[$i] = $i;
-		}
-		for my $i (0..($num - 1))
-		{
-		    $rand = rand((scalar @a - 1));
-		    $rand = sprintf("%u",$rand);
-		    $order[$i] = $a[$rand];
-		    splice(@a,$rand,1);
-		}
-		print("Random order was chosen. Is it really random? @order[0,1,2,3]\n");
-	}
-}
-if ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l2" or $mode[1] eq "2" ) )
-{
-	print "\ndirection: l1 -> l2\n\n";
-	$vocl1r = \@vocl1;
-	$vocl2r = \@vocl2;
-}
-elsif ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l1" or $mode[1] eq "1" ) )
-{
-	print "\ndirection: l2 -> l1\n\n";
-	$vocl1r = \@vocl2;
-	$vocl2r = \@vocl1;
-}
 
-if ( $mode[0] eq "trainer" or $mode[0] eq "t" )
-{
+		for my $i ( 0..( $num - 1 ) )
+		{
+			$a[$i] = $i;
+		}
+
+		for my $i ( 0..( $num - 1 ) )
+		{
+			$rand = rand( scalar @a - 1 );
+			$rand = sprintf( "%u", $rand );
+			$order[$i] = $a[$rand];
+			splice( @a, $rand, 1 );
+		}
+
+		print "order: random\n";
+	}
+
+	if ( $mode[1] eq "l2" or $mode[1] eq "2" )
+	{
+		print "\ndirection: l1 -> l2\n\n";
+		$vocl1r = \@vocl1;
+		$vocl2r = \@vocl2;
+	}
+	elsif ( $mode[1] eq "l1" or $mode[1] eq "1" )
+	{
+		print "\ndirection: l2 -> l1\n\n";
+		$vocl1r = \@vocl2;
+		$vocl2r = \@vocl1;
+	}
+
 	print "\nmode: vocabulary test\n";
 
 	for my $i (@order)
