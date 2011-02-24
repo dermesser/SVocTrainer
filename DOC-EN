@@ -43,4 +43,6 @@ $ ./SVocTrainer DB MODE LANGUAGE [ORDER]
 	- "1" is the argument for the first column in the db. SVT asks you for the word in column 1 displaying the related word of column 2.
 	- "2" is the argument for the second column in the db. SVT asks you for the word in column 2 displaying the related word of column 1.
 	- "b" is only useful for the [d]ictionary mode. "b" stands for "bidirectional" and makes it possible to ask in the d-mode both columns for strings (like "ef" in the example above).
-- "ORDER" is the Order argument and only useful for the [t]raining mode.
+- "ORDER" is the Order argument and only useful for the [t]raining mode. It says svt if you want to be asked in a linear or a random order.
+	- "o" (in future "l") asks you the first, second, third, fourd... word pair.
+	- "r" asks you the words in a random order.
