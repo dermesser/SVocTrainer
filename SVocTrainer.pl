@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2010 LLynx, dermesser
+# Copyright 2010, 2011 by LLynx, dermesser
 
 #    This file is part of SVocTrainer.
 #
@@ -26,7 +26,7 @@ my @vocl1;
 my @vocl2;
 my $vocl1r;
 my $vocl2r;
-my @wrongList = (-1); # -1 or any other invalid number
+my @wrongList = (-1); # -1 or any other invalid (negative) number
 my $ix;
 my $vocFile;
 my @order;
@@ -62,66 +62,73 @@ while ( $inp = <$vocFile> )
 close $vocFile;
 
 print "\n$num correct records processed.\n" ;
-## Here is the list of order (@order) generated. it says in which order the words are asked.
-if ( $mode[0] eq "t" or $mode[0] eq "trainer")
-{
-	if ( $mode[2] eq "o" )
-	{
-		for my $i (0..($num - 1))
-		{
-			$order[$i] = $i;
-		}
-		print("Order is linear (1,2,3...) \n");
-	} elsif ( $mode[2] eq "r" )
-	{
-		my @a;
-		my $rand;
-		for my $i (0..($num - 1))
-		{
-		    $a[$i] = $i;
-		}
-		for my $i (0..($num - 1))
-		{
-		    $rand = rand((scalar @a - 1));
-		    $rand = sprintf("%u",$rand);
-		    $order[$i] = $a[$rand];
-		    splice(@a,$rand,1);
-		}
-		print("Random order was chosen. Is it really random? @order[0,1,2,3]\n");
-	}
-}
-if ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l2" or $mode[1] eq "2" ) )
-{
-	print "\ndirection: l1 -> l2\n\n";
-	$vocl1r = \@vocl1;
-	$vocl2r = \@vocl2;
-}
-elsif ( ( $mode[0] eq "t" or $mode[0] eq "trainer" ) and ( $mode[1] eq "l1" or $mode[1] eq "1" ) )
-{
-	print "\ndirection: l2 -> l1\n\n";
-	$vocl1r = \@vocl2;
-	$vocl2r = \@vocl1;
-}
 
-if ( $mode[0] eq "trainer" or $mode[0] eq "t" )
+if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 {
 	print "\nmode: vocabulary test\n";
 
-	for my $i (@order)
+	# generation of the @order array
+	if ( $mode[2] eq "l" )
 	{
-		print( ( $i+1 ) . "/$num: $vocl1r->[$i] ?  > " );
+		for my $i ( 0..( $num - 1 ) )
+		{
+			$order[$i] = $i;
+		}
+
+		print "order: linear\n";
+	}
+	elsif ( $mode[2] eq "r" )
+	{
+		my @a;
+		my $rand;
+
+		for my $i ( 0..( $num - 1 ) )
+		{
+			$a[$i] = $i;
+		}
+
+		for my $i ( 0..( $num - 1 ) )
+		{
+			$rand = sprintf( "%u", rand scalar @a );
+			$order[$i] = $a[$rand];
+			splice( @a, $rand, 1 );
+		}
+
+		print "order: random\n";
+	}
+
+	if ( $mode[1] eq "l2" or $mode[1] eq "2" )
+	{
+		print "direction: l1 -> l2\n\n";
+		$vocl1r = \@vocl1;
+		$vocl2r = \@vocl2;
+	}
+	elsif ( $mode[1] eq "l1" or $mode[1] eq "1" )
+	{
+		print "direction: l2 -> l1\n\n";
+		$vocl1r = \@vocl2;
+		$vocl2r = \@vocl1;
+	}
+
+
+	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
+	{
+		$ix = $order[$i];
+		print( ( $i+1 ) . "/$num: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
-		if ( lc( $inp ) eq lc( $vocl2r->[$i] ) )
+		if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
 		{
 			print "Correct!\n";
 		}
 		else
 		{
-			print "Wrong! Correct was: $vocl2r->[$i]\n";
-			if ( ( $wrongList[0] != $i ) )
+			print "Wrong! Correct was: $vocl2r->[$ix]\n";
+
+			if ( ( $wrongList[0] != $ix ) )
 			{
-				unshift @wrongList, $i;
+				unshift @wrongList, $ix;
 			}
+			--$i; # answer wasn't correct, so the user should enter it again
 		}
 	}
 
@@ -151,11 +158,11 @@ if ( $mode[0] eq "trainer" or $mode[0] eq "t" )
 }
 elsif ( $mode[0] eq "dictionary" or $mode[0] eq "d" )
 {
-	print "\nmode: dictionary look-up\nEnter nothing to leave the program.";
+	print "\nmode: dictionary look-up\n\nEnter nothing to leave the program.";
 
 	while ( 1 ) # loop is terminated with last
 	{
-		print "\nEnter a regular expression to search for: > ";
+		print "\n\nEnter a regular expression to search for: > ";
 		$inp = readnchomp();
 		last if ( $inp eq "" ); # exit loop if input was empty
 		print "\nResults:\n";
