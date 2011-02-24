@@ -23,85 +23,22 @@ Attention: The code examples are only readable for experienced perl developers! 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 #############################################################################################################################
 
-This is the documentation for the perl program (yes, I find we should call it a program, it doesn't have got features that a script has got) SVocTrainer.
-SVocTrainer stands for Simple Vocabulary Trainer which completely describes this program. It's a really simple vocabulary trainer, without features like
-- a GUI
-- big DB-Systems like MySQL
-- slowness
-- fussiness...
+SVocTrainer (SVT) is a small tool to study your vocabulary for school but you also can study other things like chemistry, math etc.
+SVT isn't big and slow yet - it's a really small program (~200 lines), written in Perl without any modules and to use it you only need tools which are available
+in every OS: A Perl Distribution, equivalent to Perl >= 5.8, a text editor and a CLI (Command Line Interface) like cmd.exe or bash, sh, ksh, whatever you want. 
 
-SVoctrainer uses standard text files for storing the vocabulary. You only need a normal text editor supporting UTF-8 and iso-8859-1 and UNIX line breaks. Then you write a file formatted as following:
+###### Start SVT ######
 
-================= <EXAMPLE> ================
+The recommended paramter syntax to call SVT is as following:
 
-# Comments are ignored
-# Also empty lines are ignored
+$ ./SVocTrainer DB MODE LANGUAGE [ORDER]
 
-# You have to write the vocabulary as l1=l2:
-l1=l2
-festival=un festival
-the sun=le soleil
-a girl=une fille
-# Well, some special characters are very difficult to write in vi ;-)
-a boy=un garcon
-mineral water=l'eau de minerale
-
-================= </EXAMPLE> ===============
-
-  				 USE THE PROGRAM
-######################################################################################
-
-To use the program, save your vocabulary in a file, e.g. 'vocs_test.txt', and type into your shell:
-
-$ ./SVocTrainer.pl vocs_test.txt
-
-Then the script starts and asks you which mode to use. Here you can choose:
-
-'d' or 'dictionary' - this mode allows you to ask the vocabulary database.
-'t' or 'trainer'    - this mode asks you the words. 
-
-*** USE THE TRAINING MODE ***
-
-IF you use the training mode, you also have to give the direction to the program. That can you do as following:
-
-'t l1'  -  asks you the words of the l1 column. It shows the l2-word and you have to type the related l1-word.
-'t l2'  -  ---- --- --- ----- -- --- l2 ------- -- ----- --- l1----- --- --- ---- -- ---- --- ------- l2-----.
-
-Example with chosen 't l1':
-===== BEGIN SVOCTRAINER OUTPUT =====
-1/9: l2? >                  ### Here you have to type 'l1' ###
-2/9: un festival? >         ### and here you type 'festival'    ###
-3/9: le soleil? >           ### right, here you have to type 'the sun' ###
-===== END SVOCTRAINER OUTPUT =====
-
-*** USE THE DICTIONARY MODE ***
-
-The dictionary mode uses regular expressions to find matches. We have used a RegEx like the following one:
-
-==== Code Example ====
-$inp = readnchomp(); # reads the input of the user, e.g.: 'il'
-...  ### Some lines
-...  ### of code...
-if ( $vocl1[$i] =~ m/.*$inp.*/ )
-{...}
-==== /Code Example ====
-
-This regex finds with the input 'il' all words with an 'il' inside, and gives (probably) following output:
-
-==== Program Output ====
-le soleil = the sun
-une fille = a girl
-
-Found 2 matches
-==== /Program output ====
-
-If there was at the l1 column a word with 'il' inside, svoctrainer would find it, too.
-
-
-+++++++++ ADDITIONAL NOTICES ++++++++
-
-* Coding of the vocabulary DB: UTF-8 is recommended for standard perl and bash >=3.00
-* For standard perl, the line break of all used files has to be UNIX/LINUX, not mac, not dos. If you have to modify the line break, use mac2unix, dos2unix...
-* For more questions write a mail to <der.messer@web.de> (Development and documentation)
-* If you find a bug or a fault in the Documentation, the program or elsewhere, send an email to <falconl@ymail.com> or, which is better, to both <falconl@ymail.com> and <der.messer@web.de>.
-
+- "DB" is the name of the text file in which the vocabulary is stored. See section "The Vocabulary DB". You always have to type this argument.
+- "MODE" is the mode in which SVT works:
+	- "t" :: [T]raining mode. SVT asks you the vocabulary in the direction you choose with the argument LANGUAGE.
+	- "d" :: [D]ictionary. You can formulate queries to the vocabulary db. If you type in the prompt "ef", SVT finds all words stored in the with LANGUAGE chosen language containing "ef".
+- "LANGUAGE" is the language you are asked or you ask (by) SVT:
+	- "1" is the argument for the first column in the db. SVT asks you for the word in column 1 displaying the related word of column 2.
+	- "2" is the argument for the second column in the db. SVT asks you for the word in column 2 displaying the related word of column 1.
+	- "b" is only useful for the [d]ictionary mode. "b" stands for "bidirectional" and makes it possible to ask in the d-mode both columns for strings (like "ef" in the example above).
+- "ORDER" is the Order argument and only useful for the [t]raining mode.
