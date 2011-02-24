@@ -111,21 +111,24 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 
 	print "\nmode: vocabulary test\n";
 
-	for my $i (@order)
+	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
-		print( ( $i+1 ) . "/$num: $vocl1r->[$i] ?  > " );
+		$ix = @order[$i];
+		print( ( $i+1 ) . "/$num: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
-		if ( lc( $inp ) eq lc( $vocl2r->[$i] ) )
+		if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
 		{
 			print "Correct!\n";
 		}
 		else
 		{
-			print "Wrong! Correct was: $vocl2r->[$i]\n";
-			if ( ( $wrongList[0] != $i ) )
+			print "Wrong! Correct was: $vocl2r->[$ix]\n";
+
+			if ( ( $wrongList[0] != $ix ) )
 			{
-				unshift @wrongList, $i;
+				unshift @wrongList, $ix;
 			}
+			--$i; # answer wasn't correct, so the user should enter it again
 		}
 	}
 
