@@ -87,8 +87,7 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 
 		for my $i ( 0..( $num - 1 ) )
 		{
-			$rand = rand( scalar @a - 1 );
-			$rand = sprintf( "%u", $rand );
+			$rand = sprintf( "%u", rand scalar @a );
 			$order[$i] = $a[$rand];
 			splice( @a, $rand, 1 );
 		}
@@ -113,7 +112,7 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
-		$ix = @order[$i];
+		$ix = $order[$i];
 		print( ( $i+1 ) . "/$num: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 		if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
