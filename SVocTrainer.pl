@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2010 LLynx, dermesser
+# Copyright 2010, 2011 by LLynx, dermesser
 
 #    This file is part of SVocTrainer.
 #
@@ -26,7 +26,7 @@ my @vocl1;
 my @vocl2;
 my $vocl1r;
 my $vocl2r;
-my @wrongList = (-1); # -1 or any other invalid number
+my @wrongList = (-1); # -1 or any other invalid (negative) number
 my $ix;
 my $vocFile;
 my @order;
