@@ -31,7 +31,7 @@ my $ix;
 my $vocFile;
 my @order;
 my @mode;
-
+my $num = 0;
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
@@ -44,7 +44,7 @@ for my $i ( 1 .. ( scalar @ARGV - 1 ) )
 	$ARGV[$i] = lc substr $ARGV[$i], 0, 1;
 }
 
-if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" ) ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" ) ) ) )
+if ( not ( ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" ) ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" ) ) ) or ( scalar @ARGV == 2 and $ARGV[1] eq "w" ) ))
 {
 	print "Wrong number of parameters! Please type all arguments correct again: >";
 	$inp = readnchomp();
@@ -54,22 +54,23 @@ if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" ) ) or ( scalar @ARGV == 3 a
 {
 	@mode = @ARGV[1, 2, 3];
 }
-open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
-
-my $num = 0;
-while ( $inp = <$vocFile> )
+if ( $mode[0] ne "w" ) # only read vocabulary from file if another mode than "[w]rite" is chosen
 {
-	chomp $inp;
-	if ( $inp =~ m/^\s*([^=#]*[^=#\s])\s*=\s*([^=#]*[^=#\s]).*$/ )
+	open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
+
+	while ( $inp = <$vocFile> )
 	{
-		( $vocl1[$num], $vocl2[$num] ) = ( $1, $2 );
-		++$num;
+		chomp $inp;
+		if ( $inp =~ m/^\s*([^=#]*[^=#\s])\s*=\s*([^=#]*[^=#\s]).*$/ )
+		{
+			( $vocl1[$num], $vocl2[$num] ) = ( $1, $2 );
+			++$num;
+		}
 	}
+
+	close $vocFile;
+	print("\n$num correct records read and processed.\n");
 }
-
-close $vocFile;
-
-print "\n$num correct records processed.\n" ;
 
 if ( $mode[0] eq "t" )
 {
@@ -204,4 +205,57 @@ elsif ( $mode[0] eq "d" )
 }
 
 print "\n";
+
+if ( $mode[0] eq "w" )
+{
+	print("Mode: Write\nPlease make sure that the file to write in exists!\n");
+	if ( not ( -e $ARGV[0] ) )
+	{
+		die("File to write in doesn't exist. Please create an (empty) file!\n");
+	}
+
+	my @l1 = ("000");
+	my @l2 = ("000");
+	my $i = 0;
+	my $j = 1;
+	while ( $l1[$i-1] ne "" )
+	{
+		print("[w]rite mode: $j/l1  > ");
+		$l1[$i] = readnchomp();
+
+		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq "" ) ) )
+		{
+			$l1[$i] .= "=";
+		}
+
+		if ( $l1[$i] =~ m/^#.*/ )
+		{
+
+			$l2[$i] = "";
+
+		}
+		elsif ( $l1[$i] ne "" and not( $l1[$i] =~ m/^#.*/ )  )
+		{
+			
+			print("[w]rite mode: $j/l2  > ");
+			$l2[$i] = readnchomp();
+
+		}
+		++$i;
+		++$j;
+	}
+	$j = 0;
+	$i -= 1; # else the last entry with "" is counted too
+	
+	print("$i records read!\n");
+	open(my $writeFile,">",$ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
+	
+	for $j (0..($i-1))
+	{
+		print($writeFile "$l1[$j]" . "$l2[$j]" . "\n");
+	}
+	
+	close($writeFile) or die("File couldn't be closed!");
+	print("Vocabulary written succesful!\n\n");
+}
 
