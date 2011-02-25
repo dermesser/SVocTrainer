@@ -44,5 +44,22 @@ $ ./SVocTrainer DB MODE LANGUAGE [ORDER]
 	- "2" is the argument for the second column in the db. SVT asks you for the word in column 2 displaying the related word of column 1.
 	- "b" is only useful for the [d]ictionary mode. "b" stands for "bidirectional" and makes it possible to ask in the d-mode both columns for strings (like "ef" in the example above).
 - "ORDER" is the Order argument and only useful for the [t]raining mode. It says svt if you want to be asked in a linear or a random order.
-	- "o" (in future "l") asks you the first, second, third, fourd... word pair.
-	- "r" asks you the words in a random order.
+	- "l" asks you the words in a linear order (1,2,3,4...)
+	- "r" asks you the words in a [r]andom order generated at the beginning of the program (e.g. 25,3,22,15,14...)
+
+###### The Vocabulary DB ######
+
+The vocabulary database (vdb) contains the vocabulary you're asked. The vdb is built really simple:
+- Lines beginning with "#" are ignored. (In a good text editor, you're able to comment hundreds of line at once)
+- The word pairs are stored as "language1=language2" (see Argument LANGUAGE in the section above).
+- Lines containing only whitespaces (space, tab...) are ignored.
+
+For an example please see the voc_ex.txt in this directory.
+
+
+###### Training mode ######
+
+In the training mode, svt asks you for the vocabulary as following (lines with # at the beginning are comments):
+==== Output example ====
+# You have chosen as arguments "t l1 o"
+
