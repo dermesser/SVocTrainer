@@ -39,7 +39,12 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 	return $input;
 }
 
-if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" or $ARGV[1] eq "trainer") ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" or $ARGV[1] eq "dictionary") ) ) )
+for my $i ( 1 .. ( scalar @ARGV - 1 ) )
+{
+	$ARGV[$i] = lc substr $ARGV[$i], 0, 1;
+}
+
+if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" ) ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" ) ) ) )
 {
 	print "Wrong number of parameters! Please type all arguments correct again: >";
 	$inp = readnchomp();
@@ -66,7 +71,7 @@ close $vocFile;
 
 print "\n$num correct records processed.\n" ;
 
-if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
+if ( $mode[0] eq "t" )
 {
 	print "\nmode: vocabulary test\n";
 
@@ -99,14 +104,14 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 
 		print "order: random\n";
 	}
-	
-	if ( $mode[1] eq "l2" or $mode[1] eq "2" )
+
+	if ( $mode[1] == 2 )
 	{
 		print "direction: l1 -> l2\n\n";
 		$vocl1r = \@vocl1;
 		$vocl2r = \@vocl2;
 	}
-	elsif ( $mode[1] eq "l1" or $mode[1] eq "1" )
+	elsif ( $mode[1] == 1 )
 	{
 		print "direction: l2 -> l1\n\n";
 		$vocl1r = \@vocl2;
@@ -159,7 +164,7 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 		}
 	}
 }
-elsif ( $mode[0] eq "dictionary" or $mode[0] eq "d" )
+elsif ( $mode[0] eq "d" )
 {
 	print "\nmode: dictionary look-up\n\nEnter nothing to leave the program.";
 
@@ -172,7 +177,7 @@ elsif ( $mode[0] eq "dictionary" or $mode[0] eq "d" )
 
 		my $count = 0;
 
-		if ( $mode[1] eq "l1" or $mode[1] eq "1" or $mode[1] eq "bidirectional" or $mode[1] eq "b" )
+		if ( $mode[1] == 1 or $mode[1] eq "b" )
 		{
 			for my $i ( 0..( scalar @vocl1  - 1 ) )
 			{
@@ -183,7 +188,7 @@ elsif ( $mode[0] eq "dictionary" or $mode[0] eq "d" )
 				}
 			}
 		}
-		if ( $mode[1] eq "l2" or $mode[1] eq "2" or $mode[1] eq "bidirectional" or $mode[1] eq "b" )
+		if ( $mode[1] == 2 or $mode[1] eq "b" )
 		{
 			for my $i ( 0..( scalar @vocl2 - 1 ) )
 			{
