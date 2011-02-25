@@ -30,6 +30,8 @@ my @wrongList = (-1); # -1 or any other invalid (negative) number
 my $ix;
 my $vocFile;
 my @order;
+my @mode;
+my $vocFileLoc;
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
@@ -40,13 +42,17 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 
 if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" or $ARGV[1] eq "trainer") ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" or $ARGV[1] eq "dictionary") ) ) )
 {
-	print "Wrong number of parameters!\n\n";
-	exit;
+	print "Wrong number of parameters! Please type all arguments correct again: >";
+	$inp = readnchomp();
+	my @promptargs = split " ",$inp;
+	$vocFileLoc = shift @promptargs;
+	@mode = @promptargs; # this operation is necessary because @promptargs is only declared in this block but @mode is declared global
+} else
+{
+	$vocFileLoc = $ARGV[0];
+	@mode = ( $ARGV[1], $ARGV[2], $ARGV[3] );
 }
-
-my @mode = ( $ARGV[1], $ARGV[2], $ARGV[3] );
-
-open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
+open( $vocFile, $vocFileLoc ) or die "Couldn't read $ARGV[0]";
 
 my $num = 0;
 while ( $inp = <$vocFile> )
