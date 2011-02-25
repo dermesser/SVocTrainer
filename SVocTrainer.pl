@@ -208,7 +208,7 @@ print "\n";
 
 if ( $mode[0] eq "w" )
 {
-	print("Mode: Write\nPlease make sure that the file to write in exists!\n");
+	print("Mode: Write\nTerminate this process and save the vocabulary by typing an empty line!\n");
 	if ( not ( -e $ARGV[0] ) )
 	{
 		die("File to write in doesn't exist. Please create an (empty) file!\n");
