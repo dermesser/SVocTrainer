@@ -31,7 +31,6 @@ my $ix;
 my $vocFile;
 my @order;
 my @mode;
-my $vocFileLoc;
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
@@ -44,15 +43,13 @@ if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" or $ARGV[1] eq "trainer") ) 
 {
 	print "Wrong number of parameters! Please type all arguments correct again: >";
 	$inp = readnchomp();
-	my @promptargs = split " ",$inp;
-	$vocFileLoc = shift @promptargs;
-	@mode = @promptargs; # this operation is necessary because @promptargs is only declared in this block but @mode is declared global
+	@mode = split " ",$inp;	
+	$ARGV[0] = shift @mode;
 } else
 {
-	$vocFileLoc = $ARGV[0];
 	@mode = ( $ARGV[1], $ARGV[2], $ARGV[3] );
 }
-open( $vocFile, $vocFileLoc ) or die "Couldn't read $ARGV[0]";
+open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
 
 my $num = 0;
 while ( $inp = <$vocFile> )
@@ -102,7 +99,7 @@ if ( $mode[0] eq "t" or $mode[0] eq "trainer" )
 
 		print "order: random\n";
 	}
-
+	
 	if ( $mode[1] eq "l2" or $mode[1] eq "2" )
 	{
 		print "direction: l1 -> l2\n\n";
