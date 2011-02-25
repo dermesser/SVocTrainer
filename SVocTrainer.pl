@@ -52,7 +52,7 @@ if ( not ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" ) ) or ( scalar @ARGV == 3 a
 	$ARGV[0] = shift @mode;
 } else
 {
-	@mode = $ARGV[1, 2, 3];
+	@mode = @ARGV[1, 2, 3];
 }
 open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
 
