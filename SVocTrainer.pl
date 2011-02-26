@@ -211,7 +211,7 @@ if ( $mode[0] eq "w" )
 	print("Mode: Write\nTerminate this process and save the vocabulary by typing an empty line!\n");
 	if ( not ( -e $ARGV[0] ) )
 	{
-		die("File to write in doesn't exist. Please create an (empty) file!\n");
+		die("File to write in doesn't exist. Please create an (empty) file by typing 'echo > FILENAME'\n\n");
 	}
 
 	my @l1 = ("000");
