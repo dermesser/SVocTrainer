@@ -182,7 +182,7 @@ elsif ( $mode[0] eq "d" )
 
 		my $count = 0;
 
-		if ( $mode[1] == 1 or $mode[1] eq "b" )
+		if ( $mode[1] eq "b" or $mode[1] == 1)
 		{
 			for my $i ( 0..( scalar @vocl1  - 1 ) )
 			{
@@ -193,7 +193,7 @@ elsif ( $mode[0] eq "d" )
 				}
 			}
 		}
-		if ( $mode[1] == 2 or $mode[1] eq "b" )
+		if ( $mode[1] eq "b" or $mode[1] == 2)
 		{
 			for my $i ( 0..( scalar @vocl2 - 1 ) )
 			{
