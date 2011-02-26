@@ -223,18 +223,18 @@ if ( $mode[0] eq "w" )
 		print("[w]rite mode: $j/l1  > ");
 		$l1[$i] = readnchomp();
 
-		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq "" ) ) )
+		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq "" ) ) )# if it isn't a comment and it isn't a terminate line (empty line), write a "=" at the end of line.
 		{
 			$l1[$i] .= "=";
 		}
 
-		if ( $l1[$i] =~ m/^#.*/ )
+		if ( $l1[$i] =~ m/^#.*/ )#If it is a comment, write nothing in the related array element of @l2 (else there is an error around line 255)
 		{
 
 			$l2[$i] = "";
 
 		}
-		elsif ( $l1[$i] ne "" and not( $l1[$i] =~ m/^#.*/ )  )
+		elsif ( ($l1[$i] ne "") and not( $l1[$i] =~ m/^#.*/ ) )#If it isn't a comment and it isn't an empty line (terminate line), ask second column/2. language
 		{
 			
 			print("[w]rite mode: $j/l2  > ");
@@ -256,6 +256,6 @@ if ( $mode[0] eq "w" )
 	}
 	
 	close($writeFile) or die("File couldn't be closed!");
-	print("Vocabulary written succesful!\n\n");
+	print("Vocabulary written succesful into $ARGV[0]!\n\n");
 }
 
