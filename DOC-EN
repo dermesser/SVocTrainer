@@ -32,13 +32,17 @@ in every OS: A Perl Distribution, equivalent to Perl >= 5.8, a text editor and a
 ###### Start SVT ######
 
 The recommended paramter syntax to call SVT is as following:
+(Arguments in [...] aren't necessary in some modes)
 
-$ ./SVocTrainer DB MODE LANGUAGE [ORDER]
+=== Shell example ===
+$ ./SVocTrainer DB MODE [LANGUAGE] [ORDER]
+=== Shell example ===
 
 - "DB" is the name of the text file in which the vocabulary is stored. See section "The Vocabulary DB". You always have to type this argument.
 - "MODE" is the mode in which SVT works:
 	- "t" :: [T]raining mode. SVT asks you the vocabulary in the direction you choose with the argument LANGUAGE.
 	- "d" :: [D]ictionary. You can formulate queries to the vocabulary db. If you type in the prompt "ef", SVT finds all words stored in the with LANGUAGE chosen language containing "ef".
+	- "w" :: [W]rite. Here you can type your vocabulary into a prompt similar like in training mode. When you're finished, you give an empty line to svt, and it stores all words into a chosen file.
 - "LANGUAGE" is the language you are asked or you ask (by) SVT:
 	- "1" is the argument for the first column in the db. SVT asks you for the word in column 1 displaying the related word of column 2.
 	- "2" is the argument for the second column in the db. SVT asks you for the word in column 2 displaying the related word of column 1.
@@ -47,19 +51,140 @@ $ ./SVocTrainer DB MODE LANGUAGE [ORDER]
 	- "l" asks you the words in a linear order (1,2,3,4...)
 	- "r" asks you the words in a [r]andom order generated at the beginning of the program (e.g. 25,3,22,15,14...)
 
-###### The Vocabulary DB ######
+###### The Vocabulary DB ####################################################################################################################
 
 The vocabulary database (vdb) contains the vocabulary you're asked. The vdb is built really simple:
 - Lines beginning with "#" are ignored. (In a good text editor, you're able to comment hundreds of line at once)
 - The word pairs are stored as "language1=language2" (see Argument LANGUAGE in the section above).
-- Lines containing only whitespaces (space, tab...) are ignored.
+- Lines containing only whitespaces (space, tab...) or empty lines are completely ignored.
+- If you want to create a "valid" db, use the [w]rite mode of svt (see below)
 
 For an example please see the voc_ex.txt in this directory.
 
+###### Training mode ########################################################################################################################
 
-###### Training mode ######
+The training mode needs following Arguments:
+=== Shell example ===
+$ ./SVocTrainer.pl FILE t LANGUAGE ORDER
+=== Shell example ===
 
-In the training mode, svt asks you for the vocabulary as following (lines with # at the beginning are comments):
+FILE is the vocabulary db, LANGUAGE is the asked language (1 for 1st column, 2 for 2nd column) and ORDER is the asked order (l for linear (1,2,3,4...), r for random order)
+
+In the training mode, svt asks you for the vocabulary as following (lines with # at the beginning are comments and not printed in the original output):
+
 ==== Output example ====
-# You have chosen as arguments "t l1 o"
+# You have chosen as arguments "t l1 r" and a french-german voc db.
+
+16 correct records read and processed. # How many pairs of words were processed?
+
+mode: vocabulary test  #
+order: random          # Status notices and modes
+direction: l2 -> l1    #
+
+1/16: stolz ?  > fier
+Correct!
+2/16: das Segel ?  > le voile
+Wrong! Correct was: la voile    # Message if answer was false                                                                                                                                               
+2/16: das Segel ?  > la voile   # If first answer incorrect, svt asks again the same word until you give the right answer                     
+Correct!                                                                                                                                                                                   
+3/16: unten ?  > en bas                                                                                                                                                              
+Correct!                                                                                                                                                                                                            
+4/16: besser ?  > mieux  # Answer                                                                                                                                          
+Correct!                 # Message if answer was correct                                                                                                                    
+5/16: nur ?  >   # Prompt
+
+==== Output example ====
+
+The training mode isn't case sensitive. All input, from vocabulary db and from the prompt, is changed into lowercase characters. If you don't want that svt isn't case sensitive then remove the lc() calls around the 
+training code block or write an email to one of the authors (AUTHORS) and order a version of svt with case sensitivity.
+
+If you want to abort the t mode, type simply 'svtexit' into the prompt. Then SVT exits immediately.
+
+###### Dictionary mode ####################################################################################################################
+
+The dictionary mode allows you to find strings in any record of a specific voc db. The dictionary mode needs following Arguments:
+=== Shell example ===
+$ ./SVocTrainer.pl FILE d LANGUAGE
+=== Shell example ===
+
+FILE is the file in which the vocabulary is stored, and LANGUAGE is either 1, 2 or b (1: svt searches in the words of the 1st column; 2: svt searches in the words of the 2nd column; 
+[b]idirectional: svt searches in both columns)
+
+Here a small piece of the output of svt when d mode is chosen:
+(# = Comments and not contained in the real output)
+
+==== Output example ====
+# Chosen is "fr_5 d b" (fr_5 is a voc db with french-german pairs)
+
+16 correct records read and processed. # How many words were processed?
+
+mode: dictionary look-up # mode notices
+
+Enter nothing to leave the program. 
+
+Enter a regular expression to search for: > er # Prompt. I typed 'er'
+
+Results:                # List of results
+vers qn = auf jdn zu    #
+grimper = klettern      #
+fier = stolz            #
+se baigner = baden      #
+sauf = außer            #
+mieux = besser          #
+grimper = klettern      #
+
+Found 7 matches # How many matches were found?
+
+==== Output example ====
+
+
+The dictionary algorithm is built as a regex as following:
+($inp is the user input):
+
+=== Code example ===
+
+if ( $vocl2[$i] =~ m/.*$inp.*/ )
+
+=== Code example ===
+
+So it finds every word containing the string $inp.
+
+If you choose '1' as language, svt searches only in the 1st column, if you choose '2' as language, svt searches only in the 2nd column, and with 'b' (for bidirectional), svt searches in both columns.
+
+###### Write Mode ######################################################################################################################
+
+The write mode allows you to generate valid vocabulary files easily and comfortable. It works similar to the t mode, it asks you for each vocabulary first the 1st column/language and then the 2nd.
+
+The [w]rite mode needs following arguments:
+=== Shell example ===
+$ ./SVocTrainer FILE w
+=== Shell example ===
+
+FILE is a file (which also can be empty) which is overwritten at the end of the writing mode.
+
+Example (comments are in this example marked with '?'!): 
+
+==== Output example ====
+
+Mode: Write ? Mode Notice
+Terminate this process and save the vocabulary by typing an empty line!
+[w]rite mode: 1/l1  > foo  ? First pair, 1st language
+[w]rite mode: 1/l2  > bar  ? First pair, 2nd language
+[w]rite mode: 2/l1  > #this is a comment ? Comments only need one column; svt doesn't ask for the second column
+[w]rite mode: 3/l1  > hello
+[w]rite mode: 3/l2  > bye
+[w]rite mode: 4/l1  >   ? An empty line terminates the process and makes svt writing all words into the given file
+3 records read!  ? How many pairs were read
+Vocabulary written succesful into file!
+
+==== Output example ====
+
+If you type a line beginning with #, the line is recognized as comment and svt doesn't ask for the second column. With comments, you can structure the db (e.g. into sections).
+
+The file you want to write in must exist, else svt exits by itself. You can easily generate an empty file with NAME:
+=== Shell example ===
+$ echo > NAME
+=== Shell example ===
+The generated file can be used as new vocabulary db file.#
+
 

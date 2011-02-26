@@ -32,6 +32,7 @@ my $vocFile;
 my @order;
 my @mode;
 my $num = 0;
+
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
@@ -171,7 +172,7 @@ if ( $mode[0] eq "t" )
 }
 elsif ( $mode[0] eq "d" )
 {
-	print "\nmode: dictionary look-up\n\nEnter nothing to leave the program.";
+	print "\nmode: dictionary look-up (languages: $mode[1])\n\nEnter nothing to leave the program.";
 
 	while ( 1 ) # loop is terminated with last
 	{
