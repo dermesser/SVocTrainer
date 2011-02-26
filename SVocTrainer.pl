@@ -125,6 +125,10 @@ if ( $mode[0] eq "t" )
 		$ix = $order[$i];
 		print( ( $i+1 ) . "/$num: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
+		if ( $inp eq "svtexit" )
+		{
+			die("Aborted on request!\n\n");
+		}
 		if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
 		{
 			print "Correct!\n";
