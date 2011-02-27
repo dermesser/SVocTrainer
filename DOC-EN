@@ -180,6 +180,16 @@ Vocabulary written succesful into file!
 ==== Output example ====
 
 If you type a line beginning with #, the line is recognized as comment and svt doesn't ask for the second column. With comments, you can structure the db (e.g. into sections).
+If you separate two or more words in one column, you can type one of this words, and svt says "correct!"
+Example in voc db:
+==== Vocabulary db example ====
+a=b/c
+x=y/z
+==== Vocabulary db example ====
+
+If you choose now "2" as language, svt shows the prompt with "a? > " and you can type either "b" or "c" - but not both at the same time. If you choose "1" as language, svt simply shows "b/c? > " 
+and you have to type "a" - so you can use this features at both sides of the db.
+
 
 The file you want to write in must exist, else svt exits by itself. You can easily generate an empty file with NAME:
 === Shell example ===

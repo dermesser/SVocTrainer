@@ -40,6 +40,25 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 	return $input;
 }
 
+sub contains($@) # Returns 1 if the second paramter as array contains the first parameter (all strings), else it returns 0.
+{
+	my $elem = shift @_;
+	my @list = @_;
+	for my $i (0..scalar(@list)-1)
+	{
+		if ( lc($list[$i]) eq lc($elem) )
+		{
+			return 1;
+			exit;
+		}
+	}
+	return 0;
+}
+
+
+
+######## Begin of actual program
+
 for my $i ( 1 .. ( scalar @ARGV - 1 ) )
 {
 	$ARGV[$i] = lc substr $ARGV[$i], 0, 1;
@@ -64,7 +83,7 @@ if ( $mode[0] ne "w" ) # only read vocabulary from file if another mode than "[w
 		chomp $inp;
 		if ( $inp =~ m/^\s*([^=#]*[^=#\s])\s*=\s*([^=#]*[^=#\s]).*$/ )
 		{
-			( $vocl1[$num], $vocl2[$num] ) = ( $1, $2 );
+			( $vocl1[$num], $vocl2[$num] ) = ( lc($1),lc($2) );
 			++$num;
 		}
 	}
@@ -130,7 +149,7 @@ if ( $mode[0] eq "t" )
 		{
 			die("Aborted on request!\n\n");
 		}
-		if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
+		if ( contains(lc($inp),split("/",$vocl2r->[$ix]) ) )
 		{
 			print "Correct!\n";
 		}
@@ -158,7 +177,7 @@ if ( $mode[0] eq "t" )
 			$ix = $wrongList[$i];
 			print "$vocl1r->[$ix] ?  > ";
 			$inp = readnchomp();
-			if ( lc( $inp ) eq lc( $vocl2r->[$ix] ) )
+			if ( contains(lc($inp),split("/",$vocl2r->[$ix]) ) )
 			{
 				print "Correct!\n";
 				splice @wrongList, $i, 1;
