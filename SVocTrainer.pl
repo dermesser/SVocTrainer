@@ -83,7 +83,7 @@ if ( $mode[0] ne "w" ) # only read vocabulary from file if another mode than "[w
 		chomp $inp;
 		if ( $inp =~ m/^\s*([^=#]*[^=#\s])\s*=\s*([^=#]*[^=#\s]).*$/ )
 		{
-			( $vocl1[$num], $vocl2[$num] ) = ( lc($1),lc($2) );
+			( $vocl1[$num], $vocl2[$num] ) = ( $1, $2 );
 			++$num;
 		}
 	}
@@ -147,9 +147,9 @@ if ( $mode[0] eq "t" )
 		$inp = readnchomp();
 		if ( $inp eq "svtexit" )
 		{
-			die("Aborted on request!\n\n");
+			die "Aborted on request!\n\n" ;
 		}
-		if ( contains(lc($inp),split("/",$vocl2r->[$ix]) ) )
+		if ( contains( lc( $inp ), split( "/", lc( $vocl2r->[$ix] ) ) ) )
 		{
 			print "Correct!\n";
 		}
@@ -177,7 +177,7 @@ if ( $mode[0] eq "t" )
 			$ix = $wrongList[$i];
 			print "$vocl1r->[$ix] ?  > ";
 			$inp = readnchomp();
-			if ( contains(lc($inp),split("/",$vocl2r->[$ix]) ) )
+			if ( contains( lc( $inp ), split( "/", lc( $vocl2r->[$ix] ) ) ) )
 			{
 				print "Correct!\n";
 				splice @wrongList, $i, 1;
