@@ -32,6 +32,7 @@ my $vocFile;
 my @order;
 my @mode;
 my $num = 0;
+my $numinfile;
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
@@ -143,11 +144,12 @@ if ( $mode[0] eq "t" )
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
 		$ix = $order[$i];
-		print( ( $i+1 ) . "/$num (#$ix): $vocl1r->[$ix] ?  > " );
+		$numinfile = $ix + 1;
+		print( ( $i+1 ) . "/$num (#$numinfile): $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 		if ( $inp eq "svtexit" )
 		{
-			die("Aborted on request!\n\n");
+			die("\nAborted on request!\n\n");
 		}
 		if ( contains(lc($inp),split("/",$vocl2r->[$ix]) ) )
 		{
