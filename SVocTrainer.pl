@@ -255,6 +255,8 @@ if ( $mode[0] eq "w" )
 	print("$i records read!\n");
 	open(my $writeFile,">",$ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
 	
+	print($writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx");
+
 	for $j (0..($i-1))
 	{
 		print($writeFile "$l1[$j]" . "$l2[$j]" . "\n");
