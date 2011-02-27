@@ -143,7 +143,7 @@ if ( $mode[0] eq "t" )
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
 		$ix = $order[$i];
-		print( ( $i+1 ) . "/$num: $vocl1r->[$ix] ?  > " );
+		print( ( $i+1 ) . "/$num (#$ix): $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 		if ( $inp eq "svtexit" )
 		{

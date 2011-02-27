@@ -51,6 +51,10 @@ $ ./SVocTrainer DB MODE [LANGUAGE] [ORDER]
 	- "l" asks you the words in a linear order (1,2,3,4...)
 	- "r" asks you the words in a [r]andom order generated at the beginning of the program (e.g. 25,3,22,15,14...)
 
+
+For SVT, it's equal if you type as second argument "t" like [t]rainer, or "tofu" - SVT interprets only the first character of each argument. So you can't type "l1" instead of "1" (3rd argument) - a language 
+"l" doesn't exist.
+
 ###### The Vocabulary DB ####################################################################################################################
 
 The vocabulary database (vdb) contains the vocabulary you're asked. The vdb is built really simple:
