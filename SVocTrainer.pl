@@ -147,6 +147,7 @@ if ( $mode[0] eq "t" )
 		$numinfile = $ix + 1;
 		print( ( $i+1 ) . "/$num (#$numinfile): $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
+		print("\n");
 		if ( $inp eq "svtexit" )
 		{
 			die("\nAborted on request!\n\n"); 
@@ -269,6 +270,7 @@ if ( $mode[0] eq "w" )
 			
 			print("[w]rite mode: $j/l2  > ");
 			$l2[$i] = readnchomp();
+			print("\n");
 
 		}
 		++$i;
