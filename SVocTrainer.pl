@@ -146,21 +146,20 @@ if ( $mode[0] eq "t" )
 		$ix = $order[$i];
 		if ( $mode[2] eq "r")
 		{
-			$numinfile = $ix + 1;
+			$numinfile = "(#". ($ix + 1) . ")";
 		} elsif ( $mode[2] eq "l" )
 		{
 			$numinfile = '';
 		}
-		print( ( $i+1 ) . "/$num (#$numinfile): $vocl1r->[$ix] ?  > " );
+		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
-		print("\n");
 		if ( $inp eq "svtexit" )
 		{
 			die("\nAborted on request!\n\n"); 
 		}
 		if ( contains( lc( $inp ), split( "/", lc( $vocl2r->[$ix] ) ) ) )
 		{
-			print "Correct!\n";
+			print "Correct!\n\n";
 		}
 		else
 		{
