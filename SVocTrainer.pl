@@ -41,7 +41,7 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 	return $input;
 }
 
-sub contains($@) # Returns 1 if the second paramter as array contains the first parameter (all strings), else it returns 0.
+sub contains($@) # Returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0.
 {
 	my $elem = shift @_;
 	my @list = @_;
@@ -149,7 +149,7 @@ if ( $mode[0] eq "t" )
 		$inp = readnchomp();
 		if ( $inp eq "svtexit" )
 		{
-			die("\nAborted on request!\n\n"); # Sorry, this version is better: Here is a \n before the line ;-)
+			die("\nAborted on request!\n\n"); 
 		}
 		if ( contains( lc( $inp ), split( "/", lc( $vocl2r->[$ix] ) ) ) )
 		{
@@ -237,7 +237,7 @@ if ( $mode[0] eq "w" )
 	print("Mode: Write\nTerminate this process and save the vocabulary by typing an empty line!\n");
 	if ( not ( -e $ARGV[0] ) )
 	{
-		system("echo > $ARGV[0]");
+		system("echo > $ARGV[0]"); # If file doesn't 
 		print("File $ARGV[0] was generated!\n\n");
 	} else
 	{
