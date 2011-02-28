@@ -237,7 +237,11 @@ if ( $mode[0] eq "w" )
 	print("Mode: Write\nTerminate this process and save the vocabulary by typing an empty line!\n");
 	if ( not ( -e $ARGV[0] ) )
 	{
-		die("File to write in doesn't exist. Please create an (empty) file by typing 'echo > FILENAME'\n\n");
+		system("echo > $ARGV[0]");
+		print("File $ARGV[0] was generated!\n\n");
+	} else
+	{
+		print("Warning: File $ARGV[0] will be overwritten! For exit immediately without overwriting, press ^C!\n\n");
 	}
 
 	my @l1 = ("000");
@@ -273,10 +277,10 @@ if ( $mode[0] eq "w" )
 	$j = 0;
 	$i -= 1; # else the last entry with "" is counted too
 	
-	print("$i records read!\n");
+	print("\n$i records read!\n");
 	open(my $writeFile,">",$ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
 	
-	print($writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx");
+	print($writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx\n");
 
 	for $j (0..($i-1))
 	{
