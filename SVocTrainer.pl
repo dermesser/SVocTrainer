@@ -144,7 +144,13 @@ if ( $mode[0] eq "t" )
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
 		$ix = $order[$i];
-		$numinfile = $ix + 1;
+		if ( $mode[2] eq "r")
+		{
+			$numinfile = $ix + 1;
+		} elsif ( $mode[2] eq "l" )
+		{
+			$numinfile = '';
+		}
 		print( ( $i+1 ) . "/$num (#$numinfile): $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 		print("\n");
