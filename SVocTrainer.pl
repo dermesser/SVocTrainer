@@ -243,8 +243,7 @@ if ( $mode[0] eq "w" )
 	print("Mode: Write\nTerminate this process and save the vocabulary by typing an empty line!\n");
 	if ( not ( -e $ARGV[0] ) )
 	{
-		system("echo > $ARGV[0]"); # If file doesn't 
-		print("File $ARGV[0] was generated!\n\n");
+		print("File $ARGV[0] will be generated!\n\n");
 	} else
 	{
 		print("Warning: File $ARGV[0] will be overwritten! For exit immediately without overwriting, press ^C!\n\n");
