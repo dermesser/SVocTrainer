@@ -252,7 +252,7 @@ if ( $mode[0] eq "w" )
 	my $j = 1;
 	while ( $l1[$i-1] ne "" )
 	{
-		print("[w]rite mode: $j/l1  > ");
+		print(" $j/l1  > ");
 		$l1[$i] = readnchomp();
 
 		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq "" ) ) )# if it isn't a comment and it isn't a terminate line (empty line), write a "=" at the end of line.
@@ -269,7 +269,7 @@ if ( $mode[0] eq "w" )
 		elsif ( ($l1[$i] ne "") and not( $l1[$i] =~ m/^#.*/ ) )#If it isn't a comment and it isn't an empty line (terminate line), ask second column/2. language
 		{
 			
-			print("[w]rite mode: $j/l2  > ");
+			print(" $j/l2  > ");
 			$l2[$i] = readnchomp();
 			print("\n");
 
