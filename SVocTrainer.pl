@@ -152,16 +152,27 @@ if ( $mode[0] eq 't' )
 		} 
 		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
+
+		if ( $inp eq 'svtstatus' )
+		{
+			print "You gave " . ( (scalar @wrongList) - 1 ) . " wrong answers\n";
+			print "You gave " . ( $i - ( (scalar @wrongList) - 1 ) ) . " right answers\n";
+			print "You have to answer " . ( $num - $i ) . " words ($num words were read)\n\n";
+			$inp = "SVTSTATUS_ASKED";
+			--$i;
+		}
+
 		if ( $inp eq 'svtexit' )
 		{
 			print "\nAborted on request!\n\n";
 			exit;
 		}
+
 		if ( contains( lc( $inp ), split( '/', lc( $vocl2r->[$ix] ) ) ) )
 		{
 			print "Correct!\n\n";
-		}
-		else
+	
+		} elsif ( $inp ne "SVTSTATUS_ASKED" )
 		{
 			print "Wrong! Correct was: $vocl2r->[$ix]\n";
 

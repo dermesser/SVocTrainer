@@ -102,7 +102,19 @@ Correct!                 # Message if answer was correct
 The training mode isn't case sensitive. All input, from vocabulary db and from the prompt, is changed into lowercase characters. If you don't want that svt isn't case sensitive then remove the lc() calls around the 
 training code block or write an email to one of the authors (AUTHORS) and order a version of svt with case sensitivity.
 
+******* The 'svt...' commands *****
+
 If you want to abort the t mode, type simply 'svtexit' into the prompt. Then SVT exits immediately.
+If you want to see statistics about the training mode, type 'svtstatus'. Here you can see an output as following:
+
+=== Output example ===
+
+4/7 (#3): genial ?  > svtstatus
+You gave 1 wrong answers
+You gave 2 right answers
+You have to answer 4 words (7 words were read)
+
+=== Output example ===
 
 ###### Dictionary mode ####################################################################################################################
 
