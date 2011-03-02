@@ -32,7 +32,7 @@ my $vocFile;
 my @order;
 my @mode;
 my $num = 0;
-my $numinfile;
+my $numinfile = '';
 
 sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 {
@@ -147,10 +147,7 @@ if ( $mode[0] eq "t" )
 		if ( $mode[2] eq "r")
 		{
 			$numinfile = "(#". ($ix + 1) . ")";
-		} elsif ( $mode[2] eq "l" )
-		{
-			$numinfile = '';
-		}
+		} 
 		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 		if ( $inp eq "svtexit" )
