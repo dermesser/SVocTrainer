@@ -26,7 +26,7 @@ my @vocl1;
 my @vocl2;
 my $vocl1r;
 my $vocl2r;
-my @wrongList = (-1); # -1 or any other invalid (negative) number
+my @wrongList = ( -1 ); # -1 or any other invalid (negative) number
 my $ix;
 my $vocFile;
 my @order;
@@ -41,16 +41,15 @@ sub readnchomp # this subroutine reads and chomps at the same time via STDIN
 	return $input;
 }
 
-sub contains($@) # Returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0.
+sub contains( $@ ) # returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0
 {
 	my $elem = shift @_;
 	my @list = @_;
-	for my $i (0..scalar(@list)-1)
+	for my $i (0 .. scalar @list - 1 )
 	{
-		if ( lc($list[$i]) eq lc($elem) )
+		if ( lc( $list[$i] ) eq lc( $elem ) )
 		{
 			return 1;
-			exit;
 		}
 	}
 	return 0;
@@ -60,22 +59,24 @@ sub contains($@) # Returns 1 if the second parameter as array contains the first
 
 ######## Begin of actual program
 
-for my $i ( 1 .. ( scalar @ARGV - 1 ) )
+for my $i ( 1 .. scalar @ARGV - 1 )
 {
 	$ARGV[$i] = lc substr $ARGV[$i], 0, 1;
 }
 
-if ( not ( ( ( scalar @ARGV == 4 and ($ARGV[1] eq "t" ) ) or ( scalar @ARGV == 3 and ($ARGV[1] eq "d" ) ) ) or ( scalar @ARGV == 2 and $ARGV[1] eq "w" ) ))
+my $l = scalar @ARGV;
+my $m = $ARGV[1];
+if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 and $m eq 'w' ) ) )
 {
-	print "Wrong number of parameters! Please type all arguments correct again: >";
+	print "Wrong number of parameters! Please type all arguments correct again: > ";
 	$inp = readnchomp();
-	@mode = split " ",$inp;	
+	@mode = split ' ',$inp;
 	$ARGV[0] = shift @mode;
 } else
 {
 	@mode = @ARGV[1, 2, 3];
 }
-if ( $mode[0] ne "w" ) # only read vocabulary from file if another mode than "[w]rite" is chosen
+if ( $mode[0] ne 'w' ) # only read vocabulary from file if another mode than "write" is chosen
 {
 	open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
 
@@ -90,15 +91,15 @@ if ( $mode[0] ne "w" ) # only read vocabulary from file if another mode than "[w
 	}
 
 	close $vocFile;
-	print("\n$num correct records read and processed.\n");
+	print "\n$num correct records read and processed.\n";
 }
 
-if ( $mode[0] eq "t" )
+if ( $mode[0] eq 't' )
 {
 	print "\nmode: vocabulary test\n";
 
 	# generation of the @order array
-	if ( $mode[2] eq "l" )
+	if ( $mode[2] eq 'l' )
 	{
 		for my $i ( 0..( $num - 1 ) )
 		{
@@ -107,7 +108,7 @@ if ( $mode[0] eq "t" )
 
 		print "order: linear\n";
 	}
-	elsif ( $mode[2] eq "r" )
+	elsif ( $mode[2] eq 'r' )
 	{
 		my @a;
 		my $rand;
@@ -127,6 +128,7 @@ if ( $mode[0] eq "t" )
 		print "order: random\n";
 	}
 
+	# setting of the direction references
 	if ( $mode[1] == 2 )
 	{
 		print "direction: l1 -> l2\n\n";
@@ -144,17 +146,18 @@ if ( $mode[0] eq "t" )
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
 	{
 		$ix = $order[$i];
-		if ( $mode[2] eq "r")
+		if ( $mode[2] eq 'r' )
 		{
-			$numinfile = "(#". ($ix + 1) . ")";
+			$numinfile = '(#'. ($ix + 1) . ')';
 		} 
 		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
-		if ( $inp eq "svtexit" )
+		if ( $inp eq 'svtexit' )
 		{
-			die("\nAborted on request!\n\n"); 
+			print "\nAborted on request!\n\n";
+			exit;
 		}
-		if ( contains( lc( $inp ), split( "/", lc( $vocl2r->[$ix] ) ) ) )
+		if ( contains( lc( $inp ), split( '/', lc( $vocl2r->[$ix] ) ) ) )
 		{
 			print "Correct!\n\n";
 		}
@@ -182,7 +185,7 @@ if ( $mode[0] eq "t" )
 			$ix = $wrongList[$i];
 			print "$vocl1r->[$ix] ?  > ";
 			$inp = readnchomp();
-			if ( contains( lc( $inp ), split( "/", lc( $vocl2r->[$ix] ) ) ) )
+			if ( contains( lc( $inp ), split( '/', lc( $vocl2r->[$ix] ) ) ) )
 			{
 				print "Correct!\n";
 				splice @wrongList, $i, 1;
@@ -194,7 +197,7 @@ if ( $mode[0] eq "t" )
 		}
 	}
 }
-elsif ( $mode[0] eq "d" )
+elsif ( $mode[0] eq 'd' )
 {
 	print "\nmode: dictionary look-up (languages: $mode[1])\n\nEnter nothing to leave the program.";
 
@@ -202,27 +205,27 @@ elsif ( $mode[0] eq "d" )
 	{
 		print "\n\nEnter a regular expression to search for: > ";
 		$inp = readnchomp();
-		last if ( $inp eq "" ); # exit loop if input was empty
+		last if ( $inp eq '' ); # exit loop if input was empty
 		print "\nResults:\n";
 
 		my $count = 0;
 
-		if ( $mode[1] eq "b" or $mode[1] == 1)
+		if ( $mode[1] eq 'b' or $mode[1] == 1)
 		{
 			for my $i ( 0..( scalar @vocl1  - 1 ) )
 			{
-				if ( $vocl1[$i] =~ m/.*$inp.*/ )
+				if ( $vocl1[$i] =~ m/$inp/ )
 				{
 					++$count;
 					print "$vocl1[$i] = $vocl2[$i]\n";
 				}
 			}
 		}
-		if ( $mode[1] eq "b" or $mode[1] == 2)
+		if ( $mode[1] eq 'b' or $mode[1] == 2)
 		{
 			for my $i ( 0..( scalar @vocl2 - 1 ) )
 			{
-				if ( $vocl2[$i] =~ m/.*$inp.*/ )
+				if ( $vocl2[$i] =~ m/$inp/ )
 				{
 					++$count;
 					print "$vocl1[$i] = $vocl2[$i]\n";
@@ -235,62 +238,62 @@ elsif ( $mode[0] eq "d" )
 
 print "\n";
 
-if ( $mode[0] eq "w" )
+if ( $mode[0] eq 'w' )
 {
-	print("Mode: Write\nTerminate this process and save the vocabulary by typing an empty line!\n");
+	print "mode: write\nTerminate this process and save the vocabulary by typing an empty line!\n";
 	if ( not ( -e $ARGV[0] ) )
 	{
-		print("File $ARGV[0] will be generated!\n\n");
+		print "File $ARGV[0] will be generated!\n\n";
 	} else
 	{
-		print("Warning: File $ARGV[0] will be overwritten! For exit immediately without overwriting, press ^C!\n\n");
+		print "Warning: File $ARGV[0] will be overwritten! To exit immediately without overwriting, press ^C!\n\n";
 	}
 
-	my @l1 = ("000");
-	my @l2 = ("000");
+	my @l1 = ( "000" );
+	my @l2 = ( "000" );
 	my $i = 0;
 	my $j = 1;
-	while ( $l1[$i-1] ne "" )
+	while ( $l1[$i-1] ne '' )
 	{
-		print(" $j/l1  > ");
+		print " $j/l1  > ";
 		$l1[$i] = readnchomp();
 
-		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq "" ) ) )# if it isn't a comment and it isn't a terminate line (empty line), write a "=" at the end of line.
+		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq '' ) ) ) # if it isn't a comment and it isn't a terminate line (empty line), write a '=' at the end of line
 		{
-			$l1[$i] .= "=";
+			$l1[$i] .= '=';
 		}
 
-		if ( $l1[$i] =~ m/^#.*/ )#If it is a comment, write nothing in the related array element of @l2 (else there is an error around line 255)
+		if ( $l1[$i] =~ m/^#.*/ ) # if it is a comment, write nothing in the related array element of @l2 (else there is an error around line 255)
 		{
 
-			$l2[$i] = "";
+			$l2[$i] = '';
 
 		}
-		elsif ( ($l1[$i] ne "") and not( $l1[$i] =~ m/^#.*/ ) )#If it isn't a comment and it isn't an empty line (terminate line), ask second column/2. language
+		elsif ( ($l1[$i] ne '') and not( $l1[$i] =~ m/^#.*/ ) ) # if it isn't a comment and it isn't an empty line (terminate line), ask second column/2. language
 		{
 			
-			print(" $j/l2  > ");
+			print " $j/l2  > ";
 			$l2[$i] = readnchomp();
-			print("\n");
+			print "\n";
 
 		}
 		++$i;
 		++$j;
 	}
 	$j = 0;
-	$i -= 1; # else the last entry with "" is counted too
+	$i -= 1; # else the last entry with '' is counted too
 	
 	print("\n$i records read!\n");
-	open(my $writeFile,">",$ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
+	open( my $writeFile, '>', $ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
 	
-	print($writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx\n");
+	print $writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx\n";
 
 	for $j (0..($i-1))
 	{
 		print($writeFile "$l1[$j]" . "$l2[$j]" . "\n");
 	}
 	
-	close($writeFile) or die("File couldn't be closed!");
-	print("Vocabulary written succesful into $ARGV[0]!\n\n");
+	close $writeFile;
+	print "Vocabulary written succesful into $ARGV[0]!\n\n";
 }
 
