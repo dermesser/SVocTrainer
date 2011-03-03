@@ -155,8 +155,8 @@ if ( $mode[0] eq 't' )
 
 		if ( $inp eq 'svtstatus' )
 		{
-			print "You gave " . ( (scalar @wrongList) - 1 ) . " wrong answers\n";
-			print "You gave " . ( $i - ( (scalar @wrongList) - 1 ) ) . " right answers\n";
+			printf "You gave " . ( (scalar @wrongList) - 1 ) . " wrong answers which are %d %%\n",( (scalar @wrongList - 1) / $i ) * 100 ;
+			printf "You gave " . ( $i - ( (scalar @wrongList) - 1 ) ) . " correct answers which are %d %%\n",( ( $i - ( scalar @wrongList - 1 ) ) / $i ) * 100 ;
 			print "You have to answer " . ( $num - $i ) . " words ($num words were read)\n\n";
 			$inp = "SVTSTATUS_ASKED";
 			--$i;
