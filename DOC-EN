@@ -1,35 +1,40 @@
-Copyright 2010, 2011 by LLynx, dermesser
+#########################################################################################
+## Copyright 2010, 2011 by LLynx, dermesser                                             ##
+##                                                                                      ##
+## This file is part of SVocTrainer.                                                    ##
+##                                                                                      ##
+## SVocTrainer is free software: you can redistribute it and/or modify                  ##
+## it under the terms of the GNU General Public License as published by                 ## 
+## the Free Software Foundation, either version 3 of the License, or                    ##
+## (at your option) any later version.                                                  ##
+##                                                                                      ##
+## SVocTrainer is distributed in the hope that it will be useful,                       ##
+## but WITHOUT ANY WARRANTY; without even the implied warranty of                       ##
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        ##
+## GNU General Public License for more details.                                         ##
+##                                                                                      ##
+## You should have received a copy of the GNU General Public License                    ##
+## along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.                 ##
+##                                                                                      ##
+## ----------------------------------------------------------------------------         ##
+##                                                                                      ##
+## For important notices see README in this directory.                                  ##
+## Attention: The code examples are only readable for experienced perl developers! ;-)  ##
+##                                                                                      ##
+##########################################################################################
 
-This file is part of SVocTrainer.
 
-SVocTrainer is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SVocTrainer is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
-
-----------------------------------------------------------------------------
-
-For important notices see README in this directory.
-Attention: The code examples are only readable for experienced perl developers! ;-)
-
-
-					DOCUMENTATION FOR "SVoctrainer"
-=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+========================================DOCUMENTATION FOR "SVoctrainer"=====================================================
 #############################################################################################################################
 
 SVocTrainer (SVT) is a small tool to study your vocabulary for school but you also can study other things like chemistry, math etc.
-SVT isn't big and slow yet - it's a really small program (~200 lines), written in Perl without any modules and to use it you only need tools which are available
-in every OS: A Perl Distribution, equivalent to Perl >= 5.8, a text editor and a CLI (Command Line Interface) like cmd.exe or bash, sh, ksh, whatever you want. 
+SVT isn't big and slow yet - it's yet a small program (~300 lines), written in Perl without any modules (which makes it also faster) and to use it you only need tools which are available
+in (almost) every OS (excepted Palm OS ;-)): A Perl Distribution, equivalent to Standard Perl >= 5.8, a text editor and a CLI (Command Line Interface) like cmd.exe or bash, sh, ksh, whatever you want.
 
-###### Start SVT ######
+For Windows, we recommend to use Strawberry Perl <http://www.strawberryperl.com> (When I'm on Windows, I use Strawberry Perl --Larry Wall), for any Linux Distribution, you
+should find the standard Perl in your Repositories (opensuse: 'perl'; debian: 'perl-base' (dependancies!); ...)
+
+###### Call SVT ######
 
 The recommended paramter syntax to call SVT is as following:
 (Arguments in [...] aren't necessary in some modes)
@@ -102,19 +107,18 @@ Correct!                 # Message if answer was correct
 The training mode isn't case sensitive. All input, from vocabulary db and from the prompt, is changed into lowercase characters. If you don't want that svt isn't case sensitive then remove the lc() calls around the 
 training code block or write an email to one of the authors (AUTHORS) and order a version of svt with case sensitivity.
 
-******* The 'svt...' commands *****
+******* The "OP-Codes" *****
 
-If you want to abort the t mode, type simply 'svtexit' into the prompt. Then SVT exits immediately.
-If you want to see statistics about the training mode, type 'svtstatus'. Here you can see an output as following:
+The Opcodes in SVT are short commands beginning with '!'. These commands help you to do things "inside" SVT:
+If you want to abort the program in the t mode, type simply '!exit' into the prompt. Then SVT exits immediately.
+If you want to see statistics about the training mode, type '!status'. Here you can see an output as following:
 
 === Output example ===
-
-4/7 (#3): genial ?  > svtstatus
-You gave 1 wrong answers
-You gave 2 right answers
+4/7 (#5): sounds ugly ?  > !status                                                                                                                                                
+You gave 1 wrong answers which are 33 %       
+You gave 2 correct answers which are 66 %
 You have to answer 4 words (7 words were read)
-
-=== Output example ===
+== Output example ===
 
 ###### Dictionary mode ####################################################################################################################
 
@@ -127,30 +131,25 @@ FILE is the file in which the vocabulary is stored, and LANGUAGE is either 1, 2 
 [b]idirectional: svt searches in both columns)
 
 Here a small piece of the output of svt when d mode is chosen:
-(# = Comments and not contained in the real output)
-
 ==== Output example ====
-# Chosen is "fr_5 d b" (fr_5 is a voc db with french-german pairs)
+16 correct records read and processed.
 
-16 correct records read and processed. # How many words were processed?
-
-mode: dictionary look-up # mode notices
+mode: dictionary look-up 
 
 Enter nothing to leave the program. 
 
-Enter a regular expression to search for: > er # Prompt. I typed 'er'
+Enter a regular expression to search for: > er
 
-Results:                # List of results
-vers qn = auf jdn zu    #
-grimper = klettern      #
-fier = stolz            #
-se baigner = baden      #
-sauf = außer            #
-mieux = besser          #
-grimper = klettern      #
+Results:                
+vers qn = auf jdn zu    
+grimper = klettern      
+fier = stolz            
+se baigner = baden      
+sauf = außer            
+mieux = besser          
+grimper = klettern      
 
-Found 7 matches # How many matches were found?
-
+Found 7 matches 
 ==== Output example ====
 
 
@@ -165,8 +164,7 @@ if ( $vocl2[$i] =~ m/.*$inp.*/ )
 
 So it finds every word containing the string $inp.
 
-If you choose '1' as language, svt searches only in the 1st column, if you choose '2' as language, svt searches only in the 2nd column, and with 'b' (for bidirectional), svt searches in both columns.
-
+If you want tp exit the program, only type an empty line (simply answer the prompt with an "enter")
 ###### Write Mode ######################################################################################################################
 
 The write mode allows you to generate valid vocabulary files easily and comfortable. It works similar to the t mode, it asks you for each vocabulary first the 1st column/language and then the 2nd.

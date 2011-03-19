@@ -153,7 +153,7 @@ if ( $mode[0] eq 't' )
 		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 
-		if ( $inp eq 'svtstatus' )
+		if ( $inp eq '!status' )
 		{
 			$i == 0 ? $i = 1 : 0; # necessary to avoid illegal division by zero in the next two lines
 			printf "You gave " . ( (scalar @wrongList) - 1 ) . " wrong answers which are %d %%\n",( (scalar @wrongList - 1) / $i ) * 100 ;
@@ -163,7 +163,7 @@ if ( $mode[0] eq 't' )
 			--$i;
 		}
 
-		if ( $inp eq 'svtexit' )
+		if ( $inp eq '!exit' )
 		{
 			print "\nAborted on request!\n\n";
 			exit;
