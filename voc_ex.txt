@@ -23,4 +23,4 @@ git=genial # Comments after an entry are also possible
 umlaute=möglich
 windows=sounds ugly
 test=test
-x=y
+x=y/z # This notation shows that y and z are both possible meanings of x. You could type in y or z, and both would be correct.
