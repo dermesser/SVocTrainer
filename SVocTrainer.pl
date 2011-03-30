@@ -55,8 +55,6 @@ sub contains( $@ ) # returns 1 if the second parameter as array contains the fir
 	return 0;
 }
 
-
-
 ######## Begin of actual program
 
 for my $i ( 1 .. scalar @ARGV - 1 )
@@ -64,9 +62,10 @@ for my $i ( 1 .. scalar @ARGV - 1 )
 	$ARGV[$i] = lc substr $ARGV[$i], 0, 1;
 }
 
-my $l = scalar @ARGV;
-my $m = $ARGV[1];
-if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 and $m eq 'w' ) ) )
+my $l = scalar @ARGV; # $l is the number of given arguments
+my $m = $ARGV[1]; # $ARGV[1] is the mode (t/w/d)
+
+if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 and $m eq 'w' ) ) ) # If the number of arguments isn't correct (in relation to the chosen mode), ask again
 {
 	print "Wrong number of parameters! Please type all arguments correct again: > ";
 	$inp = readnchomp();
@@ -76,6 +75,7 @@ if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 a
 {
 	@mode = @ARGV[1, 2, 3];
 }
+
 if ( $mode[0] ne 'w' ) # only read vocabulary from file if another mode than "write" is chosen
 {
 	open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
@@ -98,7 +98,7 @@ if ( $mode[0] eq 't' )
 {
 	print "\nmode: vocabulary test\n";
 
-	# generation of the @order array
+	# generation of the @order array. This algorithm makes sure that the generation of the order is fast and secure.
 	if ( $mode[2] eq 'l' )
 	{
 		for my $i ( 0..( $num - 1 ) )
@@ -128,7 +128,7 @@ if ( $mode[0] eq 't' )
 		print "order: random\n";
 	}
 
-	# setting of the direction references
+	# setting of the direction references. This save KiBs of Memory if you have many words.
 	if ( $mode[1] == 2 )
 	{
 		print "direction: l1 -> l2\n\n";
@@ -143,7 +143,7 @@ if ( $mode[0] eq 't' )
 	}
 
 
-	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep if an answer wasn't correct
+	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep: Repeats a word if an answer wasn't correct
 	{
 		$ix = $order[$i];
 		if ( $mode[2] eq 'r' )
@@ -153,27 +153,30 @@ if ( $mode[0] eq 't' )
 		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
 		$inp = readnchomp();
 
+###### OPcodes
+
 		if ( $inp eq '!status' )
 		{
 			$i == 0 ? $i = 1 : 0; # necessary to avoid illegal division by zero in the next two lines
 			printf "You gave " . ( (scalar @wrongList) - 1 ) . " wrong answers which are %d %%\n",( (scalar @wrongList - 1) / $i ) * 100 ;
 			printf "You gave " . ( $i - ( (scalar @wrongList) - 1 ) ) . " correct answers which are %d %%\n",( ( $i - ( scalar @wrongList - 1 ) ) / $i ) * 100 ;
 			print "You have to answer " . ( $num - $i ) . " words ($num words were read)\n\n";
-			$inp = "SVTSTATUS_ASKED";
-			--$i;
+			$inp = "SVTSTATUS_ASKED";# See some lines above. This value marks an answer not as 'wrong' which avoids the increment of the fail-counter
+			--$i;# If !status was called, repeat the word
 		}
-
 		if ( $inp eq '!exit' )
 		{
 			print "\nAborted on request!\n\n";
 			exit;
 		}
 
+###### OPcodes
+
 		if ( contains( lc( $inp ), split( '/', lc( $vocl2r->[$ix] ) ) ) )
 		{
 			print "Correct!\n\n";
 	
-		} elsif ( $inp ne "SVTSTATUS_ASKED" )
+		} elsif ( $inp ne "SVTSTATUS_ASKED" ) # If the OP-Code '!status' was called (some lines above), repeat the word, but don't mark it 'wrong'
 		{
 			print "Wrong! Correct was: $vocl2r->[$ix]\n";
 
