@@ -98,7 +98,7 @@ if ( $mode[0] eq 't' )
 {
 	print "\nmode: vocabulary test\n";
 
-	# generation of the @order array. This algorithm makes sure that the generation of the order is fast and secure.
+	# generation of the @order array. This algorithm makes sure that the generation of the order is fast and secure
 	if ( $mode[2] eq 'l' )
 	{
 		for my $i ( 0..( $num - 1 ) )
@@ -128,7 +128,7 @@ if ( $mode[0] eq 't' )
 		print "order: random\n";
 	}
 
-	# setting of the direction references. This save KiBs of Memory if you have many words.
+	# setting of the direction references. This saves often KiBs of Memory
 	if ( $mode[1] == 2 )
 	{
 		print "direction: l1 -> l2\n\n";
@@ -143,7 +143,7 @@ if ( $mode[0] eq 't' )
 	}
 
 
-	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep: Repeats a word if an answer wasn't correct
+	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep
 	{
 		$ix = $order[$i];
 		if ( $mode[2] eq 'r' )
@@ -278,7 +278,7 @@ if ( $mode[0] eq 'w' )
 			$l1[$i] .= '=';
 		}
 
-		if ( $l1[$i] =~ m/^#.*/ ) # if it is a comment, write nothing in the related array element of @l2 (else there is an error around line 255)
+		if ( $l1[$i] =~ m/^#.*/ ) # if it is a comment, write nothing in the related array element of @l2 
 		{
 
 			$l2[$i] = '';
