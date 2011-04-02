@@ -25,16 +25,16 @@
 
 
 ========================================DOCUMENTATION FOR "SVoctrainer"=====================================================
-#############################################################################################################################
 
 SVocTrainer (SVT) is a small tool to study your vocabulary for school but you also can study other things like chemistry, math etc.
 SVT isn't big and slow yet - it's yet a small program (~300 lines), written in Perl without any modules (which makes it also faster) and to use it you only need tools which are available
-in (almost) every OS (excepted Palm OS ;-)): A Perl Distribution, equivalent to Standard Perl >= 5.8, a text editor and a CLI (Command Line Interface) like cmd.exe or bash, sh, ksh, whatever you want.
+in (almost) every OS (excepted Palm OS ;-)): A Perl Distribution, equivalent to Standard Perl >= 5.8 (written with Perl >=5.10, but should work also with 
+Perl >= 5.0 because in SVT aren't many new features of Perl used), a text editor and a CLI (Command Line Interface) like cmd.exe or bash, sh, ksh, whatever you want.
 
 For Windows, we recommend to use Strawberry Perl <http://www.strawberryperl.com> (When I'm on Windows, I use Strawberry Perl --Larry Wall), for any Linux Distribution, you
-should find the standard Perl in your Repositories (opensuse: 'perl'; debian: 'perl-base' (dependancies!); ...)
+should find a capable Perl in your Repositories (opensuse: 'perl'; debian: 'perl-base' (dependancies!); ...)
 
-###### Call SVT ######
+###### Call SVT from the Command line ######
 
 The recommended paramter syntax to call SVT is as following:
 (Arguments in [...] aren't necessary in some modes)
@@ -92,26 +92,32 @@ direction: l2 -> l1    #
 
 1/16: stolz ?  > fier
 Correct!
+
 2/16: das Segel ?  > le voile
-Wrong! Correct was: la voile    # Message if answer was false                                                                                                                                               
+Wrong! Correct was: la voile    # Message if answer was false       
+
 2/16: das Segel ?  > la voile   # If first answer incorrect, svt asks again the same word until you give the right answer                     
-Correct!                                                                                                                                                                                   
+Correct!  
+
 3/16: unten ?  > en bas                                                                                                                                                              
-Correct!                                                                                                                                                                                                            
+Correct! 
+
 4/16: besser ?  > mieux  # Answer                                                                                                                                          
-Correct!                 # Message if answer was correct                                                                                                                    
+Correct!                 # Message if answer was correct 
+
 5/16: nur ?  >   # Prompt
 
 ==== Output example ====
 
-The training mode isn't case sensitive. All input, from vocabulary db and from the prompt, is changed into lowercase characters. If you don't want that svt isn't case sensitive then remove the lc() calls around the 
-training code block or write an email to one of the authors (AUTHORS) and order a version of svt with case sensitivity.
+The training mode isn't case sensitive. All input, from vocabulary db and from the prompt, is changed into lowercase characters. If you don't 
+want that svt isn't case sensitive then remove the lc() calls around the training code block or write an email to one of the authors (AUTHORS) 
+to get a version of SVT with case sensitivity.
 
 ******* The "OP-Codes" *****
 
 The Opcodes in SVT are short commands beginning with '!'. These commands help you to do things "inside" SVT:
-If you want to abort the program in the t mode, type simply '!exit' into the prompt. Then SVT exits immediately.
-If you want to see statistics about the training mode, type '!status'. Here you can see an output as following:
+-- If you want to abort the program in the t mode without an hard SIGTERM (^C), type simply '!exit' into the prompt. Then SVT exits immediately and has time to close all files etc.
+-- If you want to see statistics about the training mode, type '!status'. Then you get such an output:
 
 === Output example ===
 4/7 (#5): sounds ugly ?  > !status                                                                                                                                                
@@ -119,6 +125,11 @@ You gave 1 wrong answers which are 33 %
 You gave 2 correct answers which are 66 %
 You have to answer 4 words (7 words were read)
 == Output example ===
+
+If you want to edit the current word pair, then type "!edit". A prompt appears and asks you for the new word for the first, and then the second column.
+If you don't type something to the prompt, the old word will be written back to the file.
+Please note that all comments contained in the file before will be overwritten after such an edit process 
+(they aren't saved in the internal arrays because they are ignored already while reading the words from the file at the beginning of the program).
 
 ###### Dictionary mode ####################################################################################################################
 
@@ -164,7 +175,8 @@ if ( $vocl2[$i] =~ m/.*$inp.*/ )
 
 So it finds every word containing the string $inp.
 
-If you want tp exit the program, only type an empty line (simply answer the prompt with an "enter")
+If you want to exit the program, only type an empty line (simply answer the prompt only with an [ENTER])
+
 ###### Write Mode ######################################################################################################################
 
 The write mode allows you to generate valid vocabulary files easily and comfortable. It works similar to the t mode, it asks you for each vocabulary first the 1st column/language and then the 2nd.
@@ -176,39 +188,34 @@ $ ./SVocTrainer FILE w
 
 FILE is a file (which also can be empty) which is overwritten at the end of the writing mode.
 
-Example (comments are in this example marked with '?'!): 
+Example (comments are marked with a '?'): 
 
 ==== Output example ====
-
 Mode: Write ? Mode Notice
 Terminate this process and save the vocabulary by typing an empty line!
 [w]rite mode: 1/l1  > foo  ? First pair, 1st language
 [w]rite mode: 1/l2  > bar  ? First pair, 2nd language
-[w]rite mode: 2/l1  > #this is a comment ? Comments only need one column; svt doesn't ask for the second column
+[w]rite mode: 2/l1  > #this is a comment                                        ? Comments only need one column; SVT doesn't ask for the second column
 [w]rite mode: 3/l1  > hello
 [w]rite mode: 3/l2  > bye
-[w]rite mode: 4/l1  >   ? An empty line terminates the process and makes svt writing all words into the given file
-3 records read!  ? How many pairs were read
-Vocabulary written succesful into file!
-
+[w]rite mode: 4/l1  >                                                           ? An empty line terminates the process and says SVT to write all words into the given file
+3 records read!
+Vocabulary written succesful into file test_voc!
 ==== Output example ====
 
-If you type a line beginning with #, the line is recognized as comment and svt doesn't ask for the second column. With comments, you can structure the db (e.g. into sections).
-If you separate two or more words in one column, you can type one of this words, and svt says "correct!"
+
+If you type a line beginning with #, the line is recognized as comment and SVT doesn't ask for the second column. With comments, you can structure the db (e.g. into sections).
+If you separate two or more words in one column, you can type one of all this words which is counted as "correct".
+
 Example in voc db:
+
 ==== Vocabulary db example ====
 a=b/c
-x=y/z
+x/y=z
 ==== Vocabulary db example ====
 
 If you choose now "2" as language, svt shows the prompt with "a? > " and you can type either "b" or "c" - but not both at the same time. If you choose "1" as language, svt simply shows "b/c? > " 
 and you have to type "a" - so you can use this features at both sides of the db.
 
-
-The file you want to write in must exist, else svt exits by itself. You can easily generate an empty file with NAME:
-=== Shell example ===
-$ echo > NAME
-=== Shell example ===
-The generated file can be used as new vocabulary db file.#
-
+In the newest version, SVT concatenates all pairs to an existing file. It doesn't overwrite a given file anymore.
 

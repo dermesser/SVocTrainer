@@ -164,6 +164,26 @@ if ( $mode[0] eq 't' )
 			$inp = "SVTSTATUS_ASKED";# See some lines above. This value marks an answer not as 'wrong' which avoids the increment of the fail-counter
 			--$i;# If !status was called, repeat the word
 		}
+
+		if ( $inp eq '!edit' )
+		{
+			print("You chose edit mode. If you save the changed vocabulary, all comments will be lost! Press ^C to abort immediately.\nIf you type nothing, the word will be untouched.\n");
+			print("Change: $vocl1r->[$ix]? > ");
+			$inp = readnchomp();
+			$vocl1r->[$ix] = $inp if ( $inp ne '' );
+			print("Change: $vocl2r->[$ix]? > ");
+			$inp = readnchomp();
+			$vocl2r->[$ix] = $inp if ( $inp ne '' );
+			open(my $writeFile,">","$ARGV[0]");
+			print($writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx\n");
+			for my $j ( 0..($num-1) )
+			{
+				print($writeFile "$vocl1r->[$j]=$vocl2r->[$j]\n");
+			}
+			close($writeFile);
+			$inp = "SVTSTATUS_ASKED";
+		}			
+		
 		if ( $inp eq '!exit' )
 		{
 			print "\nAborted on request!\n\n";
