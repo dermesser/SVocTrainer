@@ -261,7 +261,7 @@ if ( $mode[0] eq 'w' )
 		print "File $ARGV[0] will be generated!\n\n";
 	} else
 	{
-		print "Warning: File $ARGV[0] will be overwritten! To exit immediately without overwriting, press ^C!\n\n";
+		print "Warning! Vocabulary will be concatenated to file $ARGV[0]! To abort immediately, press ^C!\n\n";
 	}
 
 	my @l1 = ( "000" );
@@ -299,7 +299,7 @@ if ( $mode[0] eq 'w' )
 	$i -= 1; # else the last entry with '' is counted too
 	
 	print("\n$i records read!\n");
-	open( my $writeFile, '>', $ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
+	open( my $writeFile, '>>', $ARGV[0]) or die("Open of $ARGV[0] not possible: $!");
 	
 	print $writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx\n";
 
