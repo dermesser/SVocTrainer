@@ -22,11 +22,11 @@ use warnings;
 use strict;
 
 my $inp;
-my @vocl1;
-my @vocl2;
-my $vocl1r;
-my $vocl2r;
+my $ask_off;
+my $ans_off;
+my $refd;
 my @wrongList = ( -1 ); # -1 or any other invalid (negative) number
+my @vocs;
 my $ix;
 my $vocFile;
 my @order;
@@ -34,14 +34,14 @@ my @mode;
 my $num = 0;
 my $numinfile = '';
 
-sub readnchomp # this subroutine reads and chomps at the same time via STDIN
+sub readnchomp ## this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
 	chomp $input;
 	return $input;
 }
 
-sub contains( $@ ) # returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0
+sub contains( $@ ) ## returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0
 {
 	my $elem = shift @_;
 	my @list = @_;
@@ -85,8 +85,9 @@ if ( $mode[0] ne 'w' ) # only read vocabulary from file if another mode than "wr
 		chomp $inp;
 		if ( $inp =~ m/^\s*([^=#]*[^=#\s])\s*=\s*([^=#]*[^=#\s]).*$/ )
 		{
-			( $vocl1[$num], $vocl2[$num] ) = ( $1, $2 );
-			++$num;
+#                                      l1 l2
+                        $vocs[$num] = [$1,$2];
+                        $num++;
 		}
 	}
 
@@ -128,32 +129,29 @@ if ( $mode[0] eq 't' )
 		print "order: random\n";
 	}
 
-	# setting of the direction references. This saves often KiBs of Memory
 	if ( $mode[1] == 2 )
 	{
 		print "direction: l1 -> l2\n\n";
-		$vocl1r = \@vocl1;
-		$vocl2r = \@vocl2;
+                ($ask_off,$ans_off) = (0,1);
 	}
 	elsif ( $mode[1] == 1 )
 	{
 		print "direction: l2 -> l1\n\n";
-		$vocl1r = \@vocl2;
-		$vocl2r = \@vocl1;
+                ($ask_off,$ans_off) = (1,0);
 	}
 
 
-	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep
+	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep in case of a false answer
 	{
 		$ix = $order[$i];
 		if ( $mode[2] eq 'r' )
 		{
 			$numinfile = '(#'. ($ix + 1) . ')';
 		} 
-		print( ( $i+1 ) . "/$num $numinfile: $vocl1r->[$ix] ?  > " );
+		print( ( $i+1 ) . "/$num $numinfile: $vocs[$ix]->[$ask_off] ?  > " );
 		$inp = readnchomp();
 
-###### OPcodes
+###### OPcodes exec.
 
 		if ( $inp eq '!status' )
 		{
@@ -165,25 +163,27 @@ if ( $mode[0] eq 't' )
 			--$i;# If !status was called, repeat the word
 		}
 
+##############################################
+
 		if ( $inp eq '!edit' )
 		{
 			print("You chose edit mode. If you save the changed vocabulary, all comments will be lost! Press ^C to abort immediately.\nIf you type nothing, the word will be untouched.\n");
 			
-			print("Change: $vocl1r->[$ix]? > ");
+			print("Change: $vocs[$ix]->[$ask_off] ? > ");
 			$inp = readnchomp();
-			$vocl1r->[$ix] = $inp if ( $inp ne '' );
+			$vocs[$ix]->[$ask_off] = $inp if ( $inp ne '' );
 			
-			print("Change: $vocl2r->[$ix]? > ");
+			print("Change: $vocs[$ix]->[$ans_off] ? > ");
 			$inp = readnchomp();
-			$vocl2r->[$ix] = $inp if ( $inp ne '' );
+			$vocs[$ix]->[$ans_off] = $inp if ( $inp ne '' );
 			
 			open(my $writeFile,">","$ARGV[0]");
 			
 			print($writeFile "### This file was created by SVocTrainer (c) 2010, 2011 Der Messer & LLynx\n");
-			
+
 			for my $j ( 0..($num-1) )
 			{
-				print($writeFile "$vocl1r->[$j]=$vocl2r->[$j]\n");
+                                        print($writeFile "$vocs[$j]->[0]=$vocs[$j]->[1]\n");
 			}
 			
 			close($writeFile);
@@ -192,21 +192,23 @@ if ( $mode[0] eq 't' )
 			$i--;
 		}			
 		
+########################################
+
 		if ( $inp eq '!exit' )
 		{
 			print "\nAborted on request!\n\n";
 			exit;
 		}
 
-###### OPcodes
+###### /OPcodes
 
-		if ( contains( lc( $inp ), split( '/', lc( $vocl2r->[$ix] ) ) ) )
+		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) )
 		{
 			print "Correct!\n\n";
 	
-		} elsif ( $inp ne "!OPCODE_ASKED" ) # If the OP-Code '!status' was called (some lines above), repeat the word, but don't mark it 'wrong'
+		} elsif ( $inp ne "!OPCODE_ASKED" ) 
 		{
-			print "Wrong! Correct was: $vocl2r->[$ix]\n";
+			print "Wrong! Correct was: $vocs[$ix]->[$ans_off]\n";
 
 			if ( ( $wrongList[0] != $ix ) )
 			{
@@ -226,16 +228,16 @@ if ( $mode[0] eq 't' )
 		for ( my $i = scalar @wrongList - 1; $i >= 0; --$i )
 		{
 			$ix = $wrongList[$i];
-			print "$vocl1r->[$ix] ?  > ";
+			print "$vocs[$ix]->[$ask_off] ?  > ";
 			$inp = readnchomp();
-			if ( contains( lc( $inp ), split( '/', lc( $vocl2r->[$ix] ) ) ) )
+			if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) )
 			{
 				print "Correct!\n";
 				splice @wrongList, $i, 1;
 			}
 			else
 			{
-				print "Wrong! Correct was: $vocl2r->[$ix]\n";
+				print "Wrong! Correct was: $vocs[$ix]->[$ans_off]\n";
 			}
 		}
 	}
@@ -255,23 +257,23 @@ elsif ( $mode[0] eq 'd' )
 
 		if ( $mode[1] eq 'b' or $mode[1] == 1)
 		{
-			for my $i ( 0..( scalar @vocl1  - 1 ) )
+			for my $i ( 0..( $num  - 1 ) )
 			{
-				if ( $vocl1[$i] =~ m/$inp/ )
+				if ( $vocs[$i]->[$ask_off] =~ m/$inp/ )
 				{
 					++$count;
-					print "$vocl1[$i] = $vocl2[$i]\n";
+					print "$vocs[$i]->[$ask_off] = $vocs[$i]->[$ans_off]\n";
 				}
 			}
 		}
 		if ( $mode[1] eq 'b' or $mode[1] == 2)
 		{
-			for my $i ( 0..( scalar @vocl2 - 1 ) )
+			for my $i ( 0..( $num - 1 ) )
 			{
-				if ( $vocl2[$i] =~ m/$inp/ )
+				if ( $vocs[$i]->[$ans_off] =~ m/$inp/ )
 				{
 					++$count;
-					print "$vocl1[$i] = $vocl2[$i]\n";
+					print "$vocs[$i]->[$ask_off] = $vocs[$i]->[$ans_off]\n";
 				}
 			}
 		}
