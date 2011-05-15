@@ -24,7 +24,6 @@ use strict;
 my $inp;
 my $ask_off;
 my $ans_off;
-my $refd;
 my @wrongList = ( -1 ); # -1 or any other invalid (negative) number
 my @vocs;
 my $ix;
