@@ -17,7 +17,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
 
-
 use warnings;
 use strict;
 
@@ -33,14 +32,14 @@ my @mode;
 my $num = 0;
 my $numinfile = '';
 
-sub readnchomp # this subroutine reads and chomps at the same time via STDIN
+sub readnchomp ## this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
 	chomp $input;
 	return $input;
 }
 
-sub contains( $@ ) # returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0
+sub contains( $@ ) ## returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0
 {
 	my $elem = shift @_;
 	my @list = @_;
@@ -64,10 +63,9 @@ sub contains_num( $@ ) # same as contains(), but with numbers
                 {
                         return 1;
                 }
-        } 
+        }
         return 0;
 }
-
 ######## Begin of actual program
 
 for my $i ( 1 .. scalar @ARGV - 1 )
@@ -108,20 +106,6 @@ if ( $mode[0] ne 'w' ) # only read vocabulary from file if another mode than "wr
 	print "\n$num correct records read and processed.\n";
 }
 
-if ( $mode[0] eq 't' or $mode[0] eq 'd' )
-{
-        if ( $mode[1] eq '2' or $mode[1] eq 'b')
-	        {
-	          print "direction: l1 -> l2\n\n";
-                  ($ask_off,$ans_off) = (0,1);
-        	}
-        	elsif ( $mode[1] == 1)
-        	{
-        		print "direction: l2 -> l1\n\n";
-                 ($ask_off,$ans_off) = (1,0);
-        	}
-}
-
 if ( $mode[0] eq 't' )
 {
 	print "\nmode: vocabulary test\n";
@@ -155,6 +139,18 @@ if ( $mode[0] eq 't' )
 
 		print "order: random\n";
 	}
+
+	if ( $mode[1] == 2 )
+	{
+		print "direction: l1 -> l2\n\n";
+                ($ask_off,$ans_off) = (0,1);
+	}
+	elsif ( $mode[1] == 1 )
+	{
+		print "direction: l2 -> l1\n\n";
+                ($ask_off,$ans_off) = (1,0);
+	}
+
 
 	for ( my $i = 0; $i < $num; ++$i ) # has to be this type of loop because of the backstep in case of a false answer
 	{
@@ -275,11 +271,11 @@ elsif ( $mode[0] eq 'd' )
 		{
 			for my $i ( 0..( $num  - 1 ) )
 			{
-				if ( $vocs[$i]->[$ask_off] =~ m/$inp/ )
+				if ( $vocs[$i]->[0] =~ m/$inp/ )
 				{
 					++$count;
-                                        push @found, $i;
-					print "$vocs[$i]->[$ask_off] = $vocs[$i]->[$ans_off]\n";
+                                        push @found,$i;
+					print "$vocs[$i]->[0] = $vocs[$i]->[1]\n";
 				}
 			}
 		}
@@ -287,10 +283,10 @@ elsif ( $mode[0] eq 'd' )
 		{
 			for my $i ( 0..( $num - 1 ) )
 			{
-				if ( $vocs[$i]->[$ans_off] =~ m/$inp/ and not contains_num($i,@found) )
+				if ( $vocs[$i]->[1] =~ m/$inp/ and not contains_num($i,@found) )
 				{
 					++$count;
-					print "$vocs[$i]->[$ask_off] = $vocs[$i]->[$ans_off]\n";
+					print "$vocs[$i]->[0] = $vocs[$i]->[1]\n";
 				}
 			}
 		}
