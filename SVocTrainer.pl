@@ -213,7 +213,7 @@ if ( $mode[0] eq 't' )
 
 ###### /OPcodes
 
-		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) )
+		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) | $inp eq "!correct")
 		{
 			print "Correct!\n\n";
 	
