@@ -211,12 +211,12 @@ if ( $mode[0] eq 't' )
 			exit;
 		}
 
-###### /OPcodes
 
-		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) | $inp eq "!correct")
+		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) || $inp eq "!correct")
 		{
 			print "Correct!\n\n";
-	
+
+###### /Opcodes
 		} elsif ( $inp ne "!OPCODE_ASKED" ) 
 		{
 			print "Wrong! Correct was: $vocs[$ix]->[$ans_off]\n";
