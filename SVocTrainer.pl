@@ -17,6 +17,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
 
+#### Compiling options
+
+## Enable the !correct opcode? yes=1/no=0
+my $correct;
+if ( 0 )
+{
+	$correct = "!correct";
+} else
+{
+	$correct = "\0";
+}
+##
+
+
 use warnings;
 use strict;
 
@@ -212,7 +226,7 @@ if ( $mode[0] eq 't' )
 		}
 
 
-		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) || $inp eq "!correct")
+		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) || $inp eq $correct)
 		{
 			print "Correct!\n\n";
 
