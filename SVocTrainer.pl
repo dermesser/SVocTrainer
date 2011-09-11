@@ -19,16 +19,17 @@
 
 #### Compiling options
 
-## Enable the !correct opcode? yes=1/no=0
+#### Enable the !correct opcode? yes=1/no=0
 my $correct;
-if ( 0 )
+
+if ( 0 ) # <<= insert here the wanted value!
 {
-	$correct = "!correct";
+	$correct = "!correct"; # <<= insert here the wanted opcode (start with ! is recommended)
 } else
 {
 	$correct = "\0";
 }
-##
+####
 
 
 use warnings;
