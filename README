@@ -28,4 +28,6 @@ There is also a documentation file, see "DOC".
 
 To start the script, type the following into your shell:
 
-$ ./SVocTrainer file_with_vocabulary.txt
+$ ./SVocTrainer file_with_vocabulary.txt <mode> <language> <order>
+
+Take a look at DOC-EN for a detailed description of the arguments.

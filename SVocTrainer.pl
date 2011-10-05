@@ -97,6 +97,12 @@ if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 a
 	$inp = readnchomp();
 	@mode = split ' ',$inp;
 	$ARGV[0] = shift @mode;
+} elsif ( $ARGV[1] eq 't' and $ARGV[3] eq 'b' )
+{	
+	print "Wrong number of parameters! Please type all arguments correct again: > ";
+	$inp = readnchomp();
+	@mode = split ' ',$inp;
+	$ARGV[0] = shift @mode;
 } else
 {
 	@mode = @ARGV[1, 2, 3];
