@@ -97,7 +97,7 @@ if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 a
 	$inp = readnchomp();
 	@mode = split ' ',$inp;
 	$ARGV[0] = shift @mode;
-} elsif ( $ARGV[1] eq 't' and $ARGV[3] eq 'b' )
+} elsif ( $ARGV[1] eq 't' and $ARGV[3] eq 'b' ) # Training mode and bidirectionality isn't good.
 {	
 	print "Wrong number of parameters! Please type all arguments correct again: > ";
 	$inp = readnchomp();
@@ -107,6 +107,7 @@ if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 a
 {
 	@mode = @ARGV[1, 2, 3];
 }
+
 
 if ( $mode[0] ne 'w' ) # only read vocabulary from file if another mode than "write" is chosen
 {
@@ -319,7 +320,7 @@ print "\n";
 
 if ( $mode[0] eq 'w' )
 {
-	print "mode: write\nTerminate this process and save the vocabulary by typing an empty line!\n";
+	print "mode: write\nSave the vocabulary and quit SVT by typing an empty line!\n";
 	if ( not ( -e $ARGV[0] ) )
 	{
 		print "File $ARGV[0] will be generated!\n\n";
