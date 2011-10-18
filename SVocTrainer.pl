@@ -17,27 +17,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with SVocTrainer.  If not, see <http://www.gnu.org/licenses/>.
 
-#### Compiling options
-
-#### Enable the !correct opcode? yes=1/no=0
-my $correct;
-
-if ( 0 ) # <<= insert here the wanted value!
-{
-	$correct = "!correct"; # <<= insert here the wanted opcode (start with ! is recommended)
-} else
-{
-	$correct = "\0";
-}
-####
-
-
 use warnings;
 use strict;
 
 use Term::ReadLine;
 
-
+my $correct = "!correct"
 my $term = Term::ReadLine->new('SVocTrainer');
 my $OUT = $term->OUT || \*STDOUT;
 my $autohistory = exists $term->Features()->{'autohistory'};
