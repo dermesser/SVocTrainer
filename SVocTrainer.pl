@@ -22,7 +22,6 @@ use strict;
 
 use Term::ReadLine;
 
-my $correct = "!correct";
 my $term = Term::ReadLine->new('SVocTrainer');
 my $OUT = $term->OUT || \*STDOUT;
 my $autohistory = exists $term->Features()->{'autohistory'};
@@ -228,7 +227,7 @@ if ( $mode[0] eq 't' )
 		}
 
 
-		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) || $inp eq $correct)
+		if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) || $inp eq '!correct')
 		{
 			print $OUT "Correct!\n\n";
 
