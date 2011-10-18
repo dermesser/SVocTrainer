@@ -22,7 +22,7 @@ use strict;
 
 use Term::ReadLine;
 
-my $correct = "!correct"
+my $correct = "!correct";
 my $term = Term::ReadLine->new('SVocTrainer');
 my $OUT = $term->OUT || \*STDOUT;
 my $autohistory = exists $term->Features()->{'autohistory'};
