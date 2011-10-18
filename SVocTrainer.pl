@@ -40,6 +40,7 @@ use Term::ReadLine;
 
 my $term = Term::ReadLine->new('SVocTrainer');
 my $OUT = $term->OUT || \*STDOUT;
+my $autohistory = exists $term->Features()->{'autohistory'};
 my $inp;
 my $ask_off;
 my $ans_off;
@@ -53,11 +54,16 @@ my $num = 0;
 my $numinfile = '';
 
 
-sub readnchomp ## this subroutine reads and chomps at the same time via STDIN
+sub readline_noaddhistory($)
 {
-	my $input = <STDIN>;
-	chomp $input;
-	return $input;
+	return $term->readline($_[0]);
+}
+
+sub readline_addhistory($)
+{
+	my $inp = $term->readline($_[0]);
+	$term->addhistory($inp) if not $autohistory and $inp =~ m/\S/;
+	return $inp;
 }
 
 sub contains( $@ ) ## returns 1 if the second parameter as array contains the first parameter (all strings), else it returns 0
@@ -101,14 +107,12 @@ my $m = $ARGV[1]; # $ARGV[1] is the mode (t/w/d)
 
 if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 and $m eq 'w' ) ) ) # If the number of arguments isn't correct (in relation to the chosen mode), ask again
 {
-	print $OUT "Wrong number of parameters! Please type all arguments correct again: > ";
-	$inp = readnchomp();
+	$inp = readline_noaddhistory("Wrong number of parameters! Please type all arguments correct again: > ");
 	@mode = split ' ',$inp;
 	$ARGV[0] = shift @mode;
 } elsif ( $ARGV[1] eq 't' and $ARGV[3] eq 'b' ) # Training mode and bidirectionality isn't good.
 {	
-	print $OUT "Wrong number of parameters! Please type all arguments correct again: > ";
-	$inp = readnchomp();
+	$inp = readline_noaddhistory("Wrong number of parameters! Please type all arguments correct again: > ");
 	@mode = split ' ',$inp;
 	$ARGV[0] = shift @mode;
 } else
@@ -189,8 +193,7 @@ if ( $mode[0] eq 't' )
 		{
 			$numinfile = '(#'. ($ix + 1) . ')';
 		} 
-		$inp = $term->readline( ( $i+1 ) . "/$num $numinfile: $vocs[$ix]->[$ask_off] ?  > " );
-		$term->addhistory($inp);
+		$inp = readline_addhistory( ( $i+1 ) . "/$num $numinfile: $vocs[$ix]->[$ask_off] ?  > " );
 
 ###### OPcodes exec.
 
@@ -210,12 +213,10 @@ if ( $mode[0] eq 't' )
 		{
 			print $OUT "You chose edit mode. If you save the changed vocabulary, all comments will be lost! Press ^C to abort immediately.\nIf you type nothing, the word will be untouched.\n";
 
-			$inp = $term->readline("Change: $vocs[$ix]->[$ask_off] ? > ");
-			$term->addhistory($inp);
+			$inp = readline_addhistory("Change: $vocs[$ix]->[$ask_off] ? > ");
 			$vocs[$ix]->[$ask_off] = $inp if ( $inp ne '' );
 
-			$inp = $term->readline("Change: $vocs[$ix]->[$ans_off] ? > ");
-			$term->addhistory($inp);
+			$inp = readline_addhistory("Change: $vocs[$ix]->[$ans_off] ? > ");
 			$vocs[$ix]->[$ans_off] = $inp if ( $inp ne '' );
 
 			open(my $writeFile,">","$ARGV[0]");
@@ -269,8 +270,7 @@ if ( $mode[0] eq 't' )
 		for ( my $i = scalar @wrongList - 1; $i >= 0; --$i )
 		{
 			$ix = $wrongList[$i];
-			$inp = $term->readline("$vocs[$ix]->[$ask_off] ?  > ");
-			$term->addhistory($inp);
+			$inp = readline_addhistory("$vocs[$ix]->[$ask_off] ?  > ");
 			if ( contains( lc( $inp ), split( '/', lc( $vocs[$ix]->[$ans_off] ) ) ) )
 			{
 				print $OUT "Correct!\n";
@@ -290,8 +290,7 @@ elsif ( $mode[0] eq 'd' )
 	while ( 1 ) # loop is terminated with last
 	{
 		my @found;
-		$inp = $term->readline("\n\nEnter a regular expression to search for: > ");
-		$term->addhistory($inp);
+		$inp = readline_addhistory("\n\nEnter a regular expression to search for: > ");
 		last if ( $inp eq '' ); # exit loop if input was empty
 		print $OUT "\nResults:\n";
 
@@ -343,8 +342,7 @@ if ( $mode[0] eq 'w' )
 	my $j = 1;
 	while ( $l1[$i-1] ne '' )
 	{
-		$l1[$i] = $term->readline(" $j/l1  > ");
-		$term->addhistory($inp);
+		$l1[$i] = readline_addhistory(" $j/l1  > ");
 
 		if ( not ( ( $l1[$i] =~ m/^#.*/ ) or ( $l1[$i] eq '' ) ) ) # if it isn't a comment and it isn't a terminate line (empty line), write a '=' at the end of line
 		{
@@ -360,8 +358,7 @@ if ( $mode[0] eq 'w' )
 		elsif ( ($l1[$i] ne '') and not( $l1[$i] =~ m/^#.*/ ) ) # if it isn't a comment and it isn't an empty line (terminate line), ask second column/2. language
 		{
 
-			$l2[$i] = $term->readline(" $j/l2  > ");
-			$term->addhistory($inp);
+			$l2[$i] = readline_addhistory(" $j/l2  > ");
 			print $OUT "\n";
 
 		}
