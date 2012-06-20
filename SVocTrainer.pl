@@ -47,6 +47,8 @@ my @mode;
 my $num = 0;
 my $numinfile = '';
 
+binmode(STDIN,":utf8");
+
 sub readnchomp ## this subroutine reads and chomps at the same time via STDIN
 {
 	my $input = <STDIN>;
@@ -111,7 +113,7 @@ if ( not ( ( $l == 4 and $m eq 't' ) or ( $l == 3 and $m eq 'd' ) or ( $l == 2 a
 
 if ( $mode[0] ne 'w' ) # only read vocabulary from file if another mode than "write" is chosen
 {
-	open( $vocFile, $ARGV[0] ) or die "Couldn't read $ARGV[0]";
+	open($vocFile,"<:utf8",$ARGV[0] ) or die "Couldn't read $ARGV[0]";
 
 	while ( $inp = <$vocFile> )
 	{
